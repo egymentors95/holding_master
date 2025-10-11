@@ -1,0 +1,104 @@
+name: Production Projects - Pull Code
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Select Project Prod Server'
+        required: true
+        type: choice
+        options:
+          - Cyber-Security-Project
+          - Ensan-Project
+          - Helpdesk-Khabir-Project
+          - King-AbdelAziz-Library-Project
+          - Twahod-Project
+          - Ekram-Project
+
+jobs:
+# Cyber Project
+  cyber_master_server:
+    name: Deploy to Cyber Master
+    runs-on: cyber-client-project-runner
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'Cyber-Security-Project' && (github.ref == 'refs/heads/master_odex-event' || github.ref == 'refs/heads/master_odex25_accounting' || github.ref == 'refs/heads/master_odex25_base' || github.ref == 'refs/heads/master_odex25_dms' || github.ref == 'refs/heads/master_odex25_fleet' || github.ref == 'refs/heads/master_odex25_ENSAN' || github.ref == 'refs/heads/master_odex25_hr' || github.ref == 'refs/heads/master_odex25_inventory' || github.ref == 'refs/heads/master_odex25_maintenance' || github.ref == 'refs/heads/master_odex25_mobile' || github.ref == 'refs/heads/master_odex25_pos' || github.ref == 'refs/heads/master_odex25_project' || github.ref == 'refs/heads/master_odex25_purchase' || github.ref == 'refs/heads/master_odex25_realstate' || github.ref == 'refs/heads/master_odex25_sales' || github.ref == 'refs/heads/master_odex25_survey' || github.ref == 'refs/heads/master_odex25_transactions' || github.ref == 'refs/heads/master_odex25_website' || github.ref == 'refs/heads/master_openeducat_erp-14.0.1.0' || github.ref == 'refs/heads/master_odex25_ensan')
+    steps:
+      - name: Checkout And Restart Project
+        run: |                    
+          echo "** [INFO] Running on branch --> ${GITHUB_REF#refs/heads/}"
+          mkdir -p ~/master_branch_sha
+          echo "$(date '+%Y-%m-%d %H:%M:%S') - ${{ github.sha }}" >> ~/master_branch_sha/${GITHUB_REF#refs/heads/}
+          sudo chmod +x ${{ secrets.CYBER_STANDARD_FOLDER_PATH }}/scripts/pull_code.sh
+          sudo ${{ secrets.CYBER_STANDARD_FOLDER_PATH }}/scripts/pull_code.sh ${{ secrets.CYBER_PROJECT_USER }} ${{ secrets.CYBER_STANDARD_FOLDER_PATH }} ${{ secrets.CYBER_MASTER_SERVICE }} master ${GITHUB_REF#refs/heads/master_} ${GITHUB_REF#refs/heads/} ${{ secrets.GH_TOKEN }}
+  
+# Ensan Project
+  ensan_master_server:
+    name: Deploy to Ensan Master
+    runs-on: ensan-client-project-runner
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'Ensan-Project' && (github.ref == 'refs/heads/master_odex-event' || github.ref == 'refs/heads/master_odex25_accounting' || github.ref == 'refs/heads/master_odex25_base' || github.ref == 'refs/heads/master_odex25_dms' || github.ref == 'refs/heads/master_odex25_fleet' || github.ref == 'refs/heads/master_odex25_ENSAN' || github.ref == 'refs/heads/master_odex25_hr' || github.ref == 'refs/heads/master_odex25_inventory' || github.ref == 'refs/heads/master_odex25_maintenance' || github.ref == 'refs/heads/master_odex25_mobile' || github.ref == 'refs/heads/master_odex25_pos' || github.ref == 'refs/heads/master_odex25_project' || github.ref == 'refs/heads/master_odex25_purchase' || github.ref == 'refs/heads/master_odex25_realstate' || github.ref == 'refs/heads/master_odex25_sales' || github.ref == 'refs/heads/master_odex25_survey' || github.ref == 'refs/heads/master_odex25_transactions' || github.ref == 'refs/heads/master_odex25_website' || github.ref == 'refs/heads/master_openeducat_erp-14.0.1.0' || github.ref == 'refs/heads/master_odex25_ensan')
+    steps:
+      - name: Checkout And Restart Project
+        run: |
+          echo "** [INFO] Running on branch --> ${GITHUB_REF#refs/heads/}"
+          mkdir -p ~/master_branch_sha
+          echo "$(date '+%Y-%m-%d %H:%M:%S') - ${{ github.sha }}" >> ~/master_branch_sha/${GITHUB_REF#refs/heads/}
+          sudo chmod +x ${{ secrets.ENSAN_STANDARD_FOLDER_PATH }}/scripts/pull_code.sh
+          sudo ${{ secrets.ENSAN_STANDARD_FOLDER_PATH }}/scripts/pull_code.sh ${{ secrets.ENSAN_PROJECT_USER }} ${{ secrets.ENSAN_STANDARD_FOLDER_PATH }} ${{ secrets.ENSAN_MASTER_SERVICE }} master ${GITHUB_REF#refs/heads/master_} ${GITHUB_REF#refs/heads/} ${{ secrets.GH_TOKEN }}
+  
+# Helpdesk Project
+  helpdesk_maser_server:
+    name: Deploy to Helpdesk Master
+    runs-on: helpdesk_server
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'Helpdesk-Khabir-Project' && (github.ref == 'refs/heads/master_odex-event' || github.ref == 'refs/heads/master_odex25_accounting' || github.ref == 'refs/heads/master_odex25_base' || github.ref == 'refs/heads/master_odex25_dms' || github.ref == 'refs/heads/master_odex25_fleet' || github.ref == 'refs/heads/master_odex25_ENSAN' || github.ref == 'refs/heads/master_odex25_hr' || github.ref == 'refs/heads/master_odex25_inventory' || github.ref == 'refs/heads/master_odex25_maintenance' || github.ref == 'refs/heads/master_odex25_mobile' || github.ref == 'refs/heads/master_odex25_pos' || github.ref == 'refs/heads/master_odex25_project' || github.ref == 'refs/heads/master_odex25_purchase' || github.ref == 'refs/heads/master_odex25_realstate' || github.ref == 'refs/heads/master_odex25_sales' || github.ref == 'refs/heads/master_odex25_survey' || github.ref == 'refs/heads/master_odex25_transactions' || github.ref == 'refs/heads/master_odex25_website' || github.ref == 'refs/heads/master_openeducat_erp-14.0.1.0' || github.ref == 'refs/heads/master_odex25_ensan')
+    steps:
+      - name: Checkout And Restart Project
+        run: |
+          echo "** [INFO] Running on branch --> ${GITHUB_REF#refs/heads/}"
+          mkdir -p ~/master_branch_sha
+          echo "$(date '+%Y-%m-%d %H:%M:%S') - ${{ github.sha }}" >> ~/master_branch_sha/${GITHUB_REF#refs/heads/}
+          sudo chmod +x ${{ secrets.HELPDESK_STANDARD_FOLDER_PATH }}/scripts/pull_code.sh
+          sudo ${{ secrets.HELPDESK_STANDARD_FOLDER_PATH }}/scripts/pull_code.sh ${{ secrets.HELPDESK_PROJECT_USER }} ${{ secrets.HELPDESK_STANDARD_FOLDER_PATH }} ${{ secrets.HELPDESK_MASTER_SERVICE }} master ${GITHUB_REF#refs/heads/master_} ${GITHUB_REF#refs/heads/} ${{ secrets.GH_TOKEN }}
+
+# King Abdel Aziz Lobrary project
+  kaz_master_server:
+    name: Deploy to KAZ Master
+    runs-on: kaz-library-project-runner
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'King-AbdelAziz-Library-Project' && (github.ref == 'refs/heads/master_odex-event' || github.ref == 'refs/heads/master_odex25_accounting' || github.ref == 'refs/heads/master_odex25_base' || github.ref == 'refs/heads/master_odex25_dms' || github.ref == 'refs/heads/master_odex25_fleet' || github.ref == 'refs/heads/master_odex25_ENSAN' || github.ref == 'refs/heads/master_odex25_hr' || github.ref == 'refs/heads/master_odex25_inventory' || github.ref == 'refs/heads/master_odex25_maintenance' || github.ref == 'refs/heads/master_odex25_mobile' || github.ref == 'refs/heads/master_odex25_pos' || github.ref == 'refs/heads/master_odex25_project' || github.ref == 'refs/heads/master_odex25_purchase' || github.ref == 'refs/heads/master_odex25_realstate' || github.ref == 'refs/heads/master_odex25_sales' || github.ref == 'refs/heads/master_odex25_survey' || github.ref == 'refs/heads/master_odex25_transactions' || github.ref == 'refs/heads/master_odex25_website' || github.ref == 'refs/heads/master_openeducat_erp-14.0.1.0' || github.ref == 'refs/heads/master_odex25_ensan')
+    steps:
+      - name: Checkout And Restart Project
+        run: |
+          echo "** [INFO] Running on branch --> ${GITHUB_REF#refs/heads/}"
+          mkdir -p ~/master_branch_sha
+          echo "$(date '+%Y-%m-%d %H:%M:%S') - ${{ github.sha }}" >> ~/master_branch_sha/${GITHUB_REF#refs/heads/}
+          sudo chmod +x ${{ secrets.KAZ_STANDARD_FOLDER_PATH }}/scripts/pull_code.sh
+          sudo ${{ secrets.KAZ_STANDARD_FOLDER_PATH }}/scripts/pull_code.sh ${{ secrets.KAZ_PROJECT_USER }} ${{ secrets.KAZ_STANDARD_FOLDER_PATH }} ${{ secrets.KAZ_MASTER_SERVICE }} master ${GITHUB_REF#refs/heads/master_} ${GITHUB_REF#refs/heads/} ${{ secrets.GH_TOKEN }}
+          sudo systemctl restart odoo-server-stage.service
+
+# Twahod project
+  twahod_master_server:
+    name: Deploy to Twahod Master
+    runs-on: twahod-client-project-runner
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'Twahod-Project' && (github.ref == 'refs/heads/master_odex-event' || github.ref == 'refs/heads/master_odex25_accounting' || github.ref == 'refs/heads/master_odex25_base' || github.ref == 'refs/heads/master_odex25_dms' || github.ref == 'refs/heads/master_odex25_fleet' || github.ref == 'refs/heads/master_odex25_ENSAN' || github.ref == 'refs/heads/master_odex25_hr' || github.ref == 'refs/heads/master_odex25_inventory' || github.ref == 'refs/heads/master_odex25_maintenance' || github.ref == 'refs/heads/master_odex25_mobile' || github.ref == 'refs/heads/master_odex25_pos' || github.ref == 'refs/heads/master_odex25_project' || github.ref == 'refs/heads/master_odex25_purchase' || github.ref == 'refs/heads/master_odex25_realstate' || github.ref == 'refs/heads/master_odex25_sales' || github.ref == 'refs/heads/master_odex25_survey' || github.ref == 'refs/heads/master_odex25_transactions' || github.ref == 'refs/heads/master_odex25_website' || github.ref == 'refs/heads/master_openeducat_erp-14.0.1.0' || github.ref == 'refs/heads/master_odex25_ensan')
+    steps:
+      - name: Checkout And Restart Project
+        run: |
+          echo "** [INFO] Running on branch --> ${GITHUB_REF#refs/heads/}"
+          mkdir -p ~/master_branch_sha
+          echo "$(date '+%Y-%m-%d %H:%M:%S') - ${{ github.sha }}" >> ~/master_branch_sha/${GITHUB_REF#refs/heads/}
+          sudo chmod +x ${{ secrets.TWAHOD_STANDARD_FOLDER_PATH }}/scripts/pull_code.sh
+          sudo ${{ secrets.TWAHOD_STANDARD_FOLDER_PATH }}/scripts/pull_code.sh ${{ secrets.TWAHOD_PROJECT_USER }} ${{ secrets.TWAHOD_STANDARD_FOLDER_PATH }} ${{ secrets.TWAHOD_MASTER_SERVICE }} master ${GITHUB_REF#refs/heads/master_} ${GITHUB_REF#refs/heads/} ${{ secrets.GH_TOKEN }}
+
+# Ekram project
+  ekram_master_server:
+    name: Deploy to Ekram Master
+    runs-on: ekram-client-project-runner
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'Ekram-Project' && (github.ref == 'refs/heads/master_odex-event' || github.ref == 'refs/heads/master_odex25_accounting' || github.ref == 'refs/heads/master_odex25_base' || github.ref == 'refs/heads/master_odex25_dms' || github.ref == 'refs/heads/master_odex25_fleet' || github.ref == 'refs/heads/master_odex25_ENSAN' || github.ref == 'refs/heads/master_odex25_hr' || github.ref == 'refs/heads/master_odex25_inventory' || github.ref == 'refs/heads/master_odex25_maintenance' || github.ref == 'refs/heads/master_odex25_mobile' || github.ref == 'refs/heads/master_odex25_pos' || github.ref == 'refs/heads/master_odex25_project' || github.ref == 'refs/heads/master_odex25_purchase' || github.ref == 'refs/heads/master_odex25_realstate' || github.ref == 'refs/heads/master_odex25_sales' || github.ref == 'refs/heads/master_odex25_survey' || github.ref == 'refs/heads/master_odex25_transactions' || github.ref == 'refs/heads/master_odex25_website' || github.ref == 'refs/heads/master_openeducat_erp-14.0.1.0' || github.ref == 'refs/heads/master_odex25_ensan')
+    steps:
+      - name: Checkout And Restart Project
+        run: |
+          echo "** [INFO] Running on branch --> ${GITHUB_REF#refs/heads/}"
+          mkdir -p ~/master_branch_sha
+          echo "$(date '+%Y-%m-%d %H:%M:%S') - ${{ github.sha }}" >> ~/master_branch_sha/${GITHUB_REF#refs/heads/}
+          sudo chmod +x ${{ secrets.EKRAM_STANDARD_FOLDER_PATH }}/scripts/pull_code.sh
+          sudo ${{ secrets.EKRAM_STANDARD_FOLDER_PATH }}/scripts/pull_code.sh ${{ secrets.EKRAM_PROJECT_USER }} ${{ secrets.EKRAM_STANDARD_FOLDER_PATH }} ${{ secrets.EKRAM_MASTER_SERVICE }} master ${GITHUB_REF#refs/heads/master_} ${GITHUB_REF#refs/heads/} ${{ secrets.GH_TOKEN }}
+
+          

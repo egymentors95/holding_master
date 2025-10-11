@@ -1,0 +1,90 @@
+name: Dev/Preprod Servers - Pull Code
+
+on:
+  push:
+    branches:
+      - dev_odex-event
+      - dev_odex25_accounting
+      - dev_odex25_base
+      - dev_odex25_dms
+      - dev_odex25_fleet
+      - dev_odex25_ENSAN
+      - dev_odex25_hr
+      - dev_odex25_inventory
+      - dev_odex25_maintenance
+      - dev_odex25_mobile
+      - dev_odex25_pos
+      - dev_odex25_project
+      - dev_odex25_purchase
+      - dev_odex25_realstate
+      - dev_odex25_sales
+      - dev_odex25_survey
+      - dev_odex25_transactions
+      - dev_odex25_website
+      - dev_openeducat_erp-14.0.1.0
+      - dev_odex25_ensan
+      - preprod_odex-event
+      - preprod_odex25_accounting
+      - preprod_odex25_base
+      - preprod_odex25_dms
+      - preprod_odex25_fleet
+      - preprod_odex25_ENSAN
+      - preprod_odex25_hr
+      - preprod_odex25_inventory
+      - preprod_odex25_maintenance
+      - preprod_odex25_mobile
+      - preprod_odex25_pos
+      - preprod_odex25_project
+      - preprod_odex25_purchase
+      - preprod_odex25_realstate
+      - preprod_odex25_sales
+      - preprod_odex25_survey
+      - preprod_odex25_transactions
+      - preprod_odex25_website
+      - preprod_openeducat_erp-14.0.1.0
+      - preprod_odex25_ensan
+
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Select Server'
+        required: true
+        type: choice
+        options:
+          - dev
+          - preprod
+        default: dev
+
+jobs:
+
+  deploy_preprod_server:
+    name: Deploy to Preprod Servers
+    runs-on: app-sever-project-runner
+    if: (github.ref == 'refs/heads/preprod_odex-event' || github.ref == 'refs/heads/preprod_odex25_accounting' || github.ref == 'refs/heads/preprod_odex25_base' || github.ref == 'refs/heads/preprod_odex25_dms' || github.ref == 'refs/heads/preprod_odex25_fleet' || github.ref == 'refs/heads/preprod_odex25_ENSAN' || github.ref == 'refs/heads/preprod_odex25_hr' || github.ref == 'refs/heads/preprod_odex25_inventory' || github.ref == 'refs/heads/preprod_odex25_maintenance' || github.ref == 'refs/heads/preprod_odex25_mobile' || github.ref == 'refs/heads/preprod_odex25_pos' || github.ref == 'refs/heads/preprod_odex25_project' || github.ref == 'refs/heads/preprod_odex25_purchase' || github.ref == 'refs/heads/preprod_odex25_realstate' || github.ref == 'refs/heads/preprod_odex25_sales' || github.ref == 'refs/heads/preprod_odex25_survey' || github.ref == 'refs/heads/preprod_odex25_transactions' || github.ref == 'refs/heads/preprod_odex25_website' || github.ref == 'refs/heads/preprod_openeducat_erp-14.0.1.0' || github.ref == 'refs/heads/preprod_odex25_ensan') || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'preprod')
+    steps:
+      - name: Checkout And Restart Project
+        run: |
+          sudo chmod +x /home/${{ secrets.CLIENT_USER }}/scripts/pull/preprod_pull_standard_code.sh
+          sudo /home/${{ secrets.CLIENT_USER }}/scripts/pull/preprod_pull_standard_code.sh
+          sudo systemctl restart ${{ secrets.ENSAN_APP_PREPROD_SERVICE }} ${{ secrets.ODEX25_GENERAL_PREPROD_SERVICE }} ${{ secrets.ODEX25_STANDARD_PREPROD_SERVICE }} ${{ secrets.TWAHOD_APP_PREPROD_SERVICE }} ${{ secrets.ODEX25_DEMO_PREPROD_SERVICE }} ${{ secrets.HELPDESK_PREPROD_SERVICE }} ${{ secrets.CYBER_APP_PREPROD_SERVICE }}
+          if [ $? -eq 0 ]; then
+              echo "** [INFO] "PREPROD" services have been restarted."
+          else
+              echo "** [ERROR] Failed to restart "PREPROD" services."
+          fi
+          
+  deploy_test_server:
+    name: Deploy to Dev Servers
+    runs-on: app-sever-project-runner
+    if: (github.ref == 'refs/heads/dev_odex-event' || github.ref == 'refs/heads/dev_odex25_accounting' || github.ref == 'refs/heads/dev_odex25_base' || github.ref == 'refs/heads/dev_odex25_dms' || github.ref == 'refs/heads/dev_odex25_fleet' || github.ref == 'refs/heads/dev_odex25_ENSAN' || github.ref == 'refs/heads/dev_odex25_hr' || github.ref == 'refs/heads/dev_odex25_inventory' || github.ref == 'refs/heads/dev_odex25_maintenance' || github.ref == 'refs/heads/dev_odex25_mobile' || github.ref == 'refs/heads/dev_odex25_pos' || github.ref == 'refs/heads/dev_odex25_project' || github.ref == 'refs/heads/dev_odex25_purchase' || github.ref == 'refs/heads/dev_odex25_realstate' || github.ref == 'refs/heads/dev_odex25_sales' || github.ref == 'refs/heads/dev_odex25_survey' || github.ref == 'refs/heads/dev_odex25_transactions' || github.ref == 'refs/heads/dev_odex25_website' || github.ref == 'refs/heads/dev_openeducat_erp-14.0.1.0' || github.ref == 'refs/heads/dev_odex25_ensan') || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'dev')
+    steps:
+      - name: Checkout And Restart Project
+        run: |
+          sudo chmod +x /home/${{ secrets.CLIENT_USER }}/scripts/pull/dev_pull_standard_code.sh
+          sudo /home/${{ secrets.CLIENT_USER }}/scripts/pull/dev_pull_standard_code.sh
+          sudo systemctl restart ${{ secrets.ENSAN_APP_TEST_SERVICE }} ${{ secrets.ODEX25_GENERAL_TEST_SERVICE }} ${{ secrets.ODEX25_STANDARD_TEST_SERVICE }} ${{ secrets.TWAHOD_APP_TEST_SERVICE }} ${{ secrets.HELPDESK_TEST_SERVICE }} ${{ secrets.KAZ_LIBRARY_TEST_SERVICE }} ${{ secrets.CYBER_APP_TEST_SERVICE }}
+          if [ $? -eq 0 ]; then
+              echo "** [INFO] "DEV" services have been restarted."
+          else
+              echo "** [ERROR] Failed to restart "DEV" services."
+          fi
