@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="custom_header">
+        <div class="header">
+            <table class="table table-borderless" style="border: none; width: 100%;" dir="ltr">
+                <tbody>
+                    <tr>
+                        <td colspan="8">
+                            <div><span style="font-weight: bold;">Report:</span> Profit Report</div>
+                            <div><span style="font-weight: bold;">Date from:</span> <span t-esc="report_data.get('date_from')"/></div>
+                            <div><span style="font-weight: bold;">Date to:</span> <span t-esc="report_data.get('date_to')"/></div>
+                            <div><span style="font-weight: bold;">Currency:</span> SR</div>
+                        </td>
+                        <td colspan="4" style="text-align: right;">
+                            <img src='/bill_product_report/static/img/logo.png' width="120px"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </template>
+
+    <template id="profit_report_html">
+        <t t-call="web.html_container">
+            <t t-call="profit_report.custom_header"/>
+
+            <!-- تحديد البارتنرز -->
+            <t t-set="partners"
+               t-value="list(set([rec['Partner'] or 'No Partner' for rec in (report_data or {}).get('product_ids', [])]))"/>
+
+            <t t-foreach="partners" t-as="partner">
+                <div class="page">
+                    <h3 style="margin:10px 0; background-color: #27F53C;">Partner:
+                        <t t-esc="partner"/>
+                    </h3>
+
+                    <table class="table table-sm table-bordered"
+                           style="width:100%; border: 1px solid black; text-align: center;">
+                        <thead style="background-color: #f0f0f0; font-weight: bold;">
+                            <tr>
+                                <th rowspan="2">Product Category</th>
+                                <th rowspan="2">Default Code</th>
+                                <th rowspan="2">Product</th>
+
+                                <th colspan="6" style="background-color: #27C2F5;">Last Year (<t t-esc="date_from_last_year"/> → <t t-esc="date_to_last_year"/>)</th>
+                                <th colspan="6" style="background-color: #27F5C1;">Current Period (<t t-esc="report_data.get('date_from')"/> → <t t-esc="report_data.get('date_to')"/>)</th>
+                            </tr>
+                            <tr>
+                                <!-- Last Year -->
+                                <th>Total QTY</th>
+                                <th>Total Value</th>
+                                <th>NASP</th>
+                                <th>NAPP</th>
+                                <th>Profit Value</th>
+                                <th>Profit Margin</th>
+                                <!-- Current -->
+                                <th>Total QTY</th>
+                                <th>Total Value</th>
+                                <th>NASP</th>
+                                <th>NAPP</th>
+                                <th>Profit Value</th>
+                                <th>Profit Margin</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <t t-set="last_category" t-value="None"/>
+                            <t t-set="totals" t-value="{
+                                'Last Year Total Quantity': 0,
+                                'Last Year Total Price': 0,
+                                'Last Profit Value': 0,
+                                'Total Quantity': 0,
+                                'Total Price': 0,
+                                'Profit Value': 0
+                            }"/>
+                            <t t-set="grand_totals" t-value="{
+                                'Last Year Total Quantity': 0,
+                                'Last Year Total Price': 0,
+                                'Last Profit Value': 0,
+                                'Total Quantity': 0,
+                                'Total Price': 0,
+                                'Profit Value': 0
+                            }"/>
+
+                            <t t-foreach="(report_data or {}).get('product_ids', [])" t-as="line">
+                                <t t-if="(line['Partner'] or 'No Partner') == partner">
+                                    <!-- Subtotal when category changes -->
+                                    <t t-if="last_category and line['Product Category'] != last_category">
+                                        <tr style="background-color:#EEE; font-weight:bold;">
+                                            <td colspan="3">Subtotal</td>
+                                            <td><t t-esc="'{:,.2f}'.format(totals['Last Year Total Quantity'])"/></td>
+                                            <td><t t-esc="'{:,.2f}'.format(totals['Last Year Total Price'])"/></td>
+                                            <td colspan="3"><t t-esc="'{:,.2f}'.format(totals['Last Profit Value'])"/></td>
+                                            <td><t t-esc="'{:,.2f}'.format(totals['Total Quantity'])"/></td>
+                                            <td><t t-esc="'{:,.2f}'.format(totals['Total Price'])"/></td>
+                                            <td colspan="3"><t t-esc="'{:,.2f}'.format(totals['Profit Value'])"/></td>
+                                        </tr>
+
+                                        <t t-set="grand_totals" t-value="{
+                                            'Last Year Total Quantity': grand_totals['Last Year Total Quantity'] + totals['Last Year Total Quantity'],
+                                            'Last Year Total Price': grand_totals['Last Year Total Price'] + totals['Last Year Total Price'],
+                                            'Last Profit Value': grand_totals['Last Profit Value'] + totals['Last Profit Value'],
+                                            'Total Quantity': grand_totals['Total Quantity'] + totals['Total Quantity'],
+                                            'Total Price': grand_totals['Total Price'] + totals['Total Price'],
+                                            'Profit Value': grand_totals['Profit Value'] + totals['Profit Value']
+                                        }"/>
+
+                                        <t t-set="totals" t-value="{
+                                            'Last Year Total Quantity': 0,
+                                            'Last Year Total Price': 0,
+                                            'Last Profit Value': 0,
+                                            'Total Quantity': 0,
+                                            'Total Price': 0,
+                                            'Profit Value': 0
+                                        }"/>
+                                    </t>
+
+                                    <t t-if="line['Product Category'] != last_category">
+                                        <tr style="background-color:#F0EBEB; font-weight:bold;">
+                                            <td colspan="15" style="text-align:left;">
+                                                <t t-esc="line['Product Category']"/>
+                                            </td>
+                                        </tr>
+                                        <t t-set="last_category" t-value="line['Product Category']"/>
+                                    </t>
+
+                                    <tr>
+                                        <td></td>
+                                        <td><t t-esc="line['Default Code']"/></td>
+                                        <td><t t-esc="line['Product']"/></td>
+                                        <td><t t-esc="'{:,.2f}'.format(line['Last Year Total Quantity'])"/></td>
+                                        <td><t t-esc="'{:,.2f}'.format(line['Last Year Total Price'])"/></td>
+                                        <td><t t-esc="'{:,.2f}'.format(line['Last Year Nsap'])"/></td>
+                                        <td><t t-esc="'{:,.2f}'.format(line['Last Year Naap'])"/></td>
+
+                                        <td><t t-esc="'{:,.2f}'.format(line['Last Profit Value'])"/></td>
+                                        <td><t t-esc="'{:,.2f}'.format(line['Last Margin'])"/></td>
+                                        <td><t t-esc="'{:,.2f}'.format(line['Total Quantity'])"/></td>
+                                        <td><t t-esc="'{:,.2f}'.format(line['Total Price'])"/></td>
+                                        <td><t t-esc="'{:,.2f}'.format(line['Nsap'])"/></td>
+                                        <td><t t-esc="'{:,.2f}'.format(line['Naap'])"/></td>
+                                        <td><t t-esc="'{:,.2f}'.format(line['Profit Value'])"/></td>
+                                        <td><t t-esc="'{:,.2f}'.format(line['Margin'])"/></td>
+                                    </tr>
+
+                                    <t t-set="totals" t-value="{
+                                        'Last Year Total Quantity': totals['Last Year Total Quantity'] + (line['Last Year Total Quantity'] or 0),
+                                        'Last Year Total Price': totals['Last Year Total Price'] + (line['Last Year Total Price'] or 0),
+                                        'Last Profit Value': totals['Last Profit Value'] + (line['Last Profit Value'] or 0),
+                                        'Total Quantity': totals['Total Quantity'] + (line['Total Quantity'] or 0),
+                                        'Total Price': totals['Total Price'] + (line['Total Price'] or 0),
+                                        'Profit Value': totals['Profit Value'] + (line['Profit Value'] or 0)
+                                    }"/>
+                                </t>
+                            </t>
+
+                            <!-- آخر subtotal -->
+                            <t t-if="last_category">
+                                <tr style="background-color:#EEE; font-weight:bold;">
+                                    <td colspan="3">Subtotal</td>
+                                    <td><t t-esc="'{:,.2f}'.format(totals['Last Year Total Quantity'])"/></td>
+                                    <td><t t-esc="'{:,.2f}'.format(totals['Last Year Total Price'])"/></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td ><t t-esc="'{:,.2f}'.format(totals['Last Profit Value'])"/></td>
+                                    <td></td>
+                                    <td><t t-esc="'{:,.2f}'.format(totals['Total Quantity'])"/></td>
+                                    <td><t t-esc="'{:,.2f}'.format(totals['Total Price'])"/></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td><t t-esc="'{:,.2f}'.format(totals['Profit Value'])"/></td>
+                                    <td></td>
+                                </tr>
+                            </t>
+
+                            <!-- Grand Total -->
+                            <tr style="background-color:#D6EAF8; font-weight:bold; border: 2px solid black;">
+                                <td colspan="3" style="text-align:center;">Grand Total</td>
+                                <td><t t-esc="'{:,.2f}'.format(grand_totals['Last Year Total Quantity'] + totals['Last Year Total Quantity'])"/></td>
+                                <td><t t-esc="'{:,.2f}'.format(grand_totals['Last Year Total Price'] + totals['Last Year Total Price'])"/></td>
+                                <td></td>
+                                <td></td>
+                                <td><t t-esc="'{:,.2f}'.format(grand_totals['Last Profit Value'] + totals['Last Profit Value'])"/></td>
+                                <td></td>
+                                <td><t t-esc="'{:,.2f}'.format(grand_totals['Total Quantity'] + totals['Total Quantity'])"/></td>
+                                <td><t t-esc="'{:,.2f}'.format(grand_totals['Total Price'] + totals['Total Price'])"/></td>
+                                <td></td>
+                                <td></td>
+                                <td><t t-esc="'{:,.2f}'.format(grand_totals['Profit Value'] + totals['Profit Value'])"/></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>
