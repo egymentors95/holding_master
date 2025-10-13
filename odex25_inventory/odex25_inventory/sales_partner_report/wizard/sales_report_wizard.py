@@ -34,6 +34,7 @@ class SalesReportWizard(models.TransientModel):
             ('date', '<=', self.date_to),
             ('company_id', 'in', self.env.companies.ids),
             ('move_id.state', '=', 'posted'),
+            ('account_id.internal_group', '=', 'income'),
             ('move_id.move_type', 'in', ['out_invoice', 'out_refund']),
         ]
         if self.product_ids:
@@ -53,6 +54,7 @@ class SalesReportWizard(models.TransientModel):
             ('date', '<=', date_to_last_year),
             ('company_id', 'in', self.env.companies.ids),
             ('move_id.state', '=', 'posted'),
+            ('account_id.internal_group', '=', 'income'),
             ('move_id.move_type', 'in', ['out_invoice', 'out_refund']),
         ]
         if self.product_ids:
@@ -87,18 +89,18 @@ class SalesReportWizard(models.TransientModel):
 
                 # -------- المبيعات الحالية --------
                 qty_out_invoice = sum(partner_lines.filtered(lambda
-                                                               l: l.move_id.move_type == 'out_invoice' and l.account_id.internal_group == 'income').mapped(
+                                                               l: l.move_id.move_type == 'out_invoice').mapped(
                     'quantity'))
                 qty_out_refund = sum(partner_lines.filtered(lambda
-                                                              l: l.move_id.move_type == 'out_refund' and l.account_id.internal_group == 'income').mapped(
+                                                              l: l.move_id.move_type == 'out_refund').mapped(
                     'quantity'))
                 total_quantity = qty_out_invoice - qty_out_refund
 
                 price_out_invoice = sum(partner_lines.filtered(lambda
-                                                                 l: l.move_id.move_type == 'out_invoice' and l.account_id.internal_group == 'income').mapped(
+                                                                 l: l.move_id.move_type == 'out_invoice').mapped(
                     'price_subtotal'))
                 price_out_refund = sum(partner_lines.filtered(lambda
-                                                                l: l.move_id.move_type == 'out_refund' and l.account_id.internal_group == 'income').mapped(
+                                                                l: l.move_id.move_type == 'out_refund').mapped(
                     'price_subtotal'))
                 total_price = price_out_invoice - price_out_refund
 
@@ -111,16 +113,16 @@ class SalesReportWizard(models.TransientModel):
                               l.move_id.partner_id == partner)
 
                 last_qty_out_invoice = sum(
-                    last_year_sales.filtered(lambda l: l.move_id.move_type == 'out_invoice' and l.account_id.internal_group == 'income').mapped('quantity'))
+                    last_year_sales.filtered(lambda l: l.move_id.move_type == 'out_invoice').mapped('quantity'))
                 last_qty_out_refund = sum(
-                    last_year_sales.filtered(lambda l: l.move_id.move_type == 'out_refund' and l.account_id.internal_group == 'income').mapped('quantity'))
+                    last_year_sales.filtered(lambda l: l.move_id.move_type == 'out_refund' ).mapped('quantity'))
                 last_year_total_quantity = last_qty_out_invoice - last_qty_out_refund
 
                 last_price_out_invoice = sum(
-                    last_year_sales.filtered(lambda l: l.move_id.move_type == 'out_invoice' and l.account_id.internal_group == 'income').mapped(
+                    last_year_sales.filtered(lambda l: l.move_id.move_type == 'out_invoice' ).mapped(
                         'price_subtotal'))
                 last_price_out_refund = sum(
-                    last_year_sales.filtered(lambda l: l.move_id.move_type == 'out_refund' and l.account_id.internal_group == 'income').mapped(
+                    last_year_sales.filtered(lambda l: l.move_id.move_type == 'out_refund' ).mapped(
                         'price_subtotal'))
                 last_year_total_price = last_price_out_invoice - last_price_out_refund
 

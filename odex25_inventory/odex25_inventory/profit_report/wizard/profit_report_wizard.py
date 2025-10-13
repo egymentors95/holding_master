@@ -32,6 +32,8 @@ class ProfitReportWizard(models.TransientModel):
             ('date', '<=', self.date_to),
             ('company_id', 'in', self.env.companies.ids),
             ('move_id.state', '=', 'posted'),
+            ('account_id.internal_group', '=', 'income'),
+
         ]
         if self.product_ids:
             domain.append(('product_id', 'in', self.product_ids.ids))
@@ -48,6 +50,8 @@ class ProfitReportWizard(models.TransientModel):
             ('date', '<=', date_to_last_year),
             ('company_id', 'in', self.env.companies.ids),
             ('move_id.state', '=', 'posted'),
+            ('account_id.internal_group', '=', 'income'),
+
         ])
 
 
@@ -77,18 +81,18 @@ class ProfitReportWizard(models.TransientModel):
 
                 # -------- المبيعات الحالية --------
                 qty_out_invoice = sum(current_lines.filtered(
-                    lambda l: l.move_id.move_type == 'out_invoice' and l.account_id.internal_group == 'income').mapped(
+                    lambda l: l.move_id.move_type == 'out_invoice' ).mapped(
                     'quantity'))
                 qty_out_refund = sum(current_lines.filtered(
-                    lambda l: l.move_id.move_type == 'out_refund' and l.account_id.internal_group == 'income').mapped(
+                    lambda l: l.move_id.move_type == 'out_refund' ).mapped(
                     'quantity'))
                 total_quantity = qty_out_invoice - qty_out_refund
 
                 price_out_invoice = sum(current_lines.filtered(
-                    lambda l: l.move_id.move_type == 'out_invoice' and l.account_id.internal_group == 'income').mapped(
+                    lambda l: l.move_id.move_type == 'out_invoice' ).mapped(
                     'price_subtotal'))
                 price_out_refund = sum(current_lines.filtered(
-                    lambda l: l.move_id.move_type == 'out_refund' and l.account_id.internal_group == 'income').mapped(
+                    lambda l: l.move_id.move_type == 'out_refund' ).mapped(
                     'price_subtotal'))
                 total_price = price_out_invoice - price_out_refund
 
@@ -124,8 +128,8 @@ class ProfitReportWizard(models.TransientModel):
                     current_lines.filtered(lambda l: l.move_id.move_type == 'in_refund').mapped('price_subtotal'))
                 total_price_invoice = price_in_invoice - price_in_refund
 
-                naap = total_price_invoice / total_quantity_invoice if total_quantity_invoice else 0.0
-
+                # naap = total_price_invoice / total_quantity_invoice if total_quantity_invoice else 0.0
+                naap = product.standard_price
                 # -------- السنة اللي فاتت مشتريات --------
                 last_qty_in_invoice = sum(
                     last_year_partner_lines.filtered(lambda l: l.move_id.move_type == 'in_invoice').mapped('quantity'))
@@ -141,7 +145,8 @@ class ProfitReportWizard(models.TransientModel):
                         'price_subtotal'))
                 last_year_total_price_invoice = last_price_in_invoice - last_price_in_refund
 
-                last_year_naap = last_year_total_price_invoice / last_year_total_quantity_invoice if last_year_total_quantity_invoice else 0.0
+                # last_year_naap = last_year_total_price_invoice / last_year_total_quantity_invoice if last_year_total_quantity_invoice else 0.0
+                last_year_naap = product.standard_price
 
                 # -------- الحسابات النهائية --------
                 margin = nsap - naap
