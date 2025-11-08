@@ -40,7 +40,7 @@
         </record>
 
         <menuitem id="salary_bank_report_menu_item" name="Salary Bank Report"
-                  parent="sale.menu_sale_report" action="reports_salary_bank.salary_bank_wizard_view_action"
+                  parent="exp_payroll_custom.menu_hr_payroll_report" action="reports_salary_bank.salary_bank_wizard_view_action"
                   sequence="300"/>
 
 
