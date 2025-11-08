@@ -40,7 +40,7 @@ class SalaryBankWizard(models.TransientModel):
 
             total_net_salary = sum(slip.total_sum for slip in slip_ids)
             total_employees = len(slip_ids)
-            iban_sponsor = self.sponsor_name_id.iban_sponsor
+            iban_sponsor = self.sponsor_name_id.iban_number or ''
             sponsor_bank_number = self.sponsor_name_id.sponsor_bank_number
             labor_office_number = self.sponsor_name_id.labor_office_number
             currency = bank.company_id.currency_id.name
