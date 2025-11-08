@@ -32,6 +32,7 @@ class SalaryBankWizard(models.TransientModel):
         for bank in bank_ids:
             slip_ids = bank.slip_ids.sudo().filtered(
                 lambda slip: slip.employee_id.sponsor_name_id.id == self.sponsor_name_id.id
+                             and slip.payment_method == 'bank'
             )
 
             if not slip_ids:
