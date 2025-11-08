@@ -40,7 +40,7 @@ class HrPayslipRunText(models.AbstractModel):
             earn_date = str(rec.get('earn_date') or '').replace('-', '')
             pay_date = str(rec.get('pay_date') or '').replace('-', '')
             total_net_salary_field = self._fmt_amount_numeric(rec.get('total_net_salary', 0.0), 15)
-            total_employees_field = self._fmt_integer_right(rec.get('total_employees', 0), 9)
+            total_employees_field = self._fmt_integer_right(rec.get('total_employees', 0), 8)
             iban_sponsor = rec.get('iban_sponsor') or ''
             currency = rec.get('currency') or ''
             date_time_now = rec.get('date_time_now') or fields.Datetime.now().strftime('%Y%m%d%H%M%S')

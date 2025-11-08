@@ -13,6 +13,7 @@
                             </group>
                             <group>
                                 <field name="date_to"/>
+                                <field name="sponsor_name_id" required="1"/>
                             </group>
                             <group>
                                 <field name="earn_date"/>
