@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+import json
+from datetime import date, datetime
+
 from odoo import api, fields, models
 from odoo.exceptions import UserError
 from dateutil.relativedelta import relativedelta
@@ -13,6 +16,7 @@ class PurchaseBillWizard(models.TransientModel):
     date_to = fields.Date(string='Date To')
     vendor_ids = fields.Many2many(string='Vendors', comodel_name='res.partner', domain="[('supplier_rank','>',0)]")
     product_category_ids = fields.Many2many(string='Product Categories', comodel_name='product.category')
+    currency_id = fields.Many2one(comodel_name='res.currency', string='currency', required=True)
 
     def get_report_data(self):
         combined_data = []
@@ -162,6 +166,24 @@ class PurchaseBillWizard(models.TransientModel):
 
                 # last_year_nsap = last_year_total_price / last_year_total_quantity if last_year_total_quantity else 0.0
                 last_year_nsap = product.standard_price
+                grand_total_qty = total_foc + total_quantity
+                percentage = (total_foc / total_quantity) * 100
+
+                # -------- تحويل العملة --------
+                company_currency = self.env.company.currency_id
+                target_currency = self.currency_id
+                date_for_rate = self.date_to or fields.Date.today()
+
+                total_price_converted = total_price
+                plan_value_converted = value
+                nsap_converted = nsap
+
+                if target_currency and target_currency != company_currency:
+                    total_price_converted = company_currency._convert(total_price, target_currency, self.env.company,
+                                                                      date_for_rate)
+                    plan_value_converted = company_currency._convert(value, target_currency, self.env.company,
+                                                                     date_for_rate)
+                    nsap_converted = company_currency._convert(nsap, target_currency, self.env.company, date_for_rate)
 
                 # -------- Append --------
                 combined_data.append({
@@ -172,15 +194,18 @@ class PurchaseBillWizard(models.TransientModel):
                     'Vendor id': vendor.id,
                     'Foc': total_foc,
 
+                    'Grand Total Qty': grand_total_qty,
+                    'Percentage': percentage,
+
                     'date_from_last_year': date_from_last_year,
                     'date_to_last_year': date_to_last_year,
 
                     'Total Quantity': total_quantity,
-                    'Total Price': total_price,
-                    'Nsap': nsap,
+                    'Total Price': total_price_converted,
+                    'Nsap': nsap_converted,
 
                     'Plan Quantity': plan_qty,
-                    'Plan Value': value,
+                    'Plan Value': plan_value_converted,
                     'Achive': achive,
                 })
 
@@ -191,6 +216,7 @@ class PurchaseBillWizard(models.TransientModel):
         data = {
             'date_from': self.date_from,
             'date_to': self.date_to,
+            'currency_name': self.currency_id.name,
             'product_ids': self.get_report_data()['combined_data'],
         }
         return self.env.ref('bill_product_report.report_action_invoice_bill').report_action(self, data=data)
@@ -200,9 +226,23 @@ class PurchaseBillWizard(models.TransientModel):
         data = {
             'date_from': self.date_from,
             'date_to': self.date_to,
+            'currency_name': self.currency_id.name,
             'product_ids': self.get_report_data()['combined_data'],
         }
-        return self.env.ref('bill_product_report.report_action_invoice_bill_html').report_action(self, data=data)
+
+        def default_converter(o):
+            if isinstance(o, (datetime, date)):
+                return o.strftime("%Y-%m-%d")
+            raise TypeError(f"Type {type(o)} not serializable")
+
+        context_json = json.dumps({'data': data}, default=default_converter)
+
+        return {
+            'type': 'ir.actions.act_url',
+            'url': '/bill_product_report/html?docids=%s&context=%s' % (
+                self.id, context_json),
+            'target': 'new',
+        }
 
     def action_view_report(self):
         self.ensure_one()
