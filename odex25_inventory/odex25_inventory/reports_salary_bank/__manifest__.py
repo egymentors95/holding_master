@@ -6,7 +6,7 @@
     "author": "El-Araby",
     "website": "",
     "license": "AGPL-3",
-    "depends": ['base','report_xlsx','account', 'exp_hr_payroll', 'hr_contract_custom'],
+    "depends": ['base','report_xlsx','account', 'exp_hr_payroll', 'hr_contract_custom', 'hr_base'],
     "data": [
         "security/ir.model.access.csv",
         "wizard/salary_bank_wizard_views.xml",
