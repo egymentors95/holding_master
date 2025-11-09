@@ -43,7 +43,7 @@ class HrPayslipRunText(models.AbstractModel):
             total_employees_field = self._fmt_integer_right(rec.get('total_employees', 0), 8)
             iban_sponsor = rec.get('iban_sponsor') or ''
             currency = rec.get('currency') or ''
-            date_time_now = fields.Datetime.now().strftime('%Y%m%d%H%M%S') + '16' 
+            date_time_now = fields.Datetime.now().strftime('%Y%m%d%H%M%S') + '16'
             sponsor_bn_digits = ''.join(ch for ch in str(rec.get('sponsor_bank_number') or '') if ch.isdigit())
             sponsor_bank_number_field = sponsor_bn_digits.rjust(16, '0')[-16:]
             labor_office_number_field = self._fmt_string_left(rec.get('labor_office_number') or '', 18)
@@ -53,7 +53,7 @@ class HrPayslipRunText(models.AbstractModel):
                 f"{total_net_salary_field}{total_employees_field}"
                 f"{iban_sponsor}{currency}E01{date_time_now}"
                 f"{sponsor_bank_number_field}{labor_office_number_field}"
-                f"PAYR{' '*6}Payroll{' '*150}"
+                f"PAYR{' '*6}Payroll{' '*151}"
             )
             report_lines.append(header)
 
