@@ -82,7 +82,7 @@ class HrPayslipRunText(models.AbstractModel):
                 spaces50 = ' ' * 50
                 zero_one = '0'
                 spaces30 = ' ' * 30
-                company_name = self._fmt_string_left(slip.company_id.name or '', 24)
+                company_name = self._fmt_string_left(slip.company_id.name or '', 23)
 
                 second_line = (
                     f"{total_sum_field}{employee_no_field}{basic_field}"
