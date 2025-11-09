@@ -73,10 +73,10 @@ class HrPayslipRunText(models.AbstractModel):
                 # --- السطر الثاني ---
                 total_sum_field = self._fmt_amount_numeric(slip.total_sum, 15)
                 employee_no_field = self._fmt_integer_right(slip.employee_id.iqama_number.iqama_id, 10)
-                basic_field = self._fmt_amount_numeric(getattr(slip, 'basic_allowance', 0.0), 18)
+                basic_field = self._fmt_amount_numeric(getattr(slip, 'basic_allowances', 0.0), 18)
                 house_field = self._fmt_amount_numeric(getattr(slip, 'house_allowances', 0.0), 12)
                 other_field = self._fmt_amount_numeric(getattr(slip, 'other_allowances', 0.0), 12)
-                deduction_field = self._fmt_amount_numeric(getattr(slip, 'total_deduction', 0.0), 12)
+                deduction_field = self._fmt_amount_numeric(getattr(slip, 'total_deductions', 0.0), 12)
                 currency_field = currency
                 five_zeros = '00000'
                 spaces50 = ' ' * 50
