@@ -70,7 +70,12 @@ class HrPayslipRunText(models.AbstractModel):
 
                 # --- السطر الثاني ---
                 total_sum_field = self._fmt_amount_numeric(slip.total_sum, 15)
-                employee_no_field = self._fmt_integer_right(slip.employee_id.iqama_number.iqama_id, 10)
+                iqama = None
+                if slip.employee_id.country_id.code == 'SA':
+                    iqama = slip.employee_id.saudi_number.saudi_id
+                else:
+                    iqama = slip.employee_id.iqama_number.iqama_id
+                employee_no_field = self._fmt_integer_right(iqama, 10)
                 basic_field = self._fmt_amount_numeric(getattr(slip, 'basic_allowances', 0.0), 18)
                 house_field = self._fmt_amount_numeric(getattr(slip, 'house_allowances', 0.0), 12)
                 collection_trans_other = slip.other_allowances + slip.trans_allowances
@@ -86,12 +91,6 @@ class HrPayslipRunText(models.AbstractModel):
                 report_lines.append(first_line)
 
 
-                # second_line = (
-                #     f"{total_sum_field}{employee_no_field}{basic_field}"
-                #     f"{house_field}{other_field}{deduction_field}"
-                #     f"{currency_field}{five_zeros}{spaces50}{zero_one}{spaces30}{company_name}"
-                # )
-                # report_lines.append(second_line)
 
         report_text = "\n".join(report_lines)
         print('teeeeeest',repr(report_text))
