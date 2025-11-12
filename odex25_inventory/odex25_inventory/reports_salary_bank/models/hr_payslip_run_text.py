@@ -66,9 +66,7 @@ class HrPayslipRunText(models.AbstractModel):
                 spaces8 = ' ' * 8
                 acc_number = (slip.employee_id.res_partner_bank_ids[:1].acc_number or '').strip()
                 spaces11 = ' ' * 11
-                emp_name = self._fmt_string_left(slip.employee_id.name, 49)
-                first_line = f"{emp_no_field}{bic}{spaces8}{acc_number}{spaces11}{emp_name}"
-                report_lines.append(first_line)
+                emp_name = self._fmt_string_left(slip.employee_id.name, 50)
 
                 # --- السطر الثاني ---
                 total_sum_field = self._fmt_amount_numeric(slip.total_sum, 15)
@@ -84,15 +82,18 @@ class HrPayslipRunText(models.AbstractModel):
                 zero_one = '0'
                 spaces30 = ' ' * 30
                 company_name = self._fmt_string_left(slip.company_id.name or '', 23)
+                first_line = f"{emp_no_field}{bic}{spaces8}{acc_number}{spaces11}{emp_name}{total_sum_field}{employee_no_field}{basic_field}{house_field}{other_field}{deduction_field}{currency_field}{five_zeros}{spaces50}{zero_one}{spaces30}{company_name}"
+                report_lines.append(first_line)
 
-                second_line = (
-                    f"{total_sum_field}{employee_no_field}{basic_field}"
-                    f"{house_field}{other_field}{deduction_field}"
-                    f"{currency_field}{five_zeros}{spaces50}{zero_one}{spaces30}{company_name}"
-                )
-                report_lines.append(second_line)
 
-        report_text = "\n".join(report_lines).lstrip()
+                # second_line = (
+                #     f"{total_sum_field}{employee_no_field}{basic_field}"
+                #     f"{house_field}{other_field}{deduction_field}"
+                #     f"{currency_field}{five_zeros}{spaces50}{zero_one}{spaces30}{company_name}"
+                # )
+                # report_lines.append(second_line)
+
+        report_text = "\n".join(report_lines)
         print('teeeeeest',repr(report_text))
 
         return {
