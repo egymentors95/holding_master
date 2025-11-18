@@ -3,7 +3,7 @@ from odoo import models, fields, api
 from decimal import Decimal, ROUND_HALF_UP
 
 
-class HrPayslipRunText(models.AbstractModel):
+class HrPayslipRunTextIqan(models.AbstractModel):
     _name = 'report.reports_salary_bank.salary_bank_text_itqan'
     _description = 'Salary Bank Text Report'
 
@@ -51,10 +51,11 @@ class HrPayslipRunText(models.AbstractModel):
                 pay_date = str(rec.get('pay_date') or '').replace('-', '')
                 static_num = '2000000'
                 mobile_field = slip.employee_id.mobile_phone or ''
-                if mobile_field:
-                    mobile_field = mobile_field
-                else:
-                    mobile_field = spaces11
+                mobile = self._fmt_string_left(mobile_field, 10)
+                # if mobile_field:
+                #     mobile_field = mobile_field
+                # else:
+                #     mobile_field = spaces11
 
                 # --- السطر الثاني ---
                 total_sum_field = self._fmt_amount_numeric(slip.total_sum, 15)
@@ -75,7 +76,7 @@ class HrPayslipRunText(models.AbstractModel):
                 zero_one = '0'
                 spaces30 = ' ' * 30
                 company_name = self._fmt_string_left(slip.company_id.name or '', 23)
-                first_line = f"{emp_no_field}{acc_number}{emp_name}{employee_no_field}{total_sum_field}{pay_date}{static_num}{spaces11}{mobile_field}{basic_field}{house_field}{other_field}{deduction_field}"
+                first_line = f"{emp_no_field}{acc_number}{emp_name}{employee_no_field}{total_sum_field}{pay_date}{static_num}{spaces11}{mobile}{basic_field}{house_field}{other_field}{deduction_field}"
                 report_lines.append(first_line)
 
 
