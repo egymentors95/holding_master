@@ -24,30 +24,6 @@ class HrPayslipRunText(models.AbstractModel):
             s = '0'
         return s.rjust(width, '0')[-width:]
 
-    def _fmt_mobile(self, mobile_phone):
-        """
-        لو في موبايل:
-            - ناخد آخر 10 digits فقط
-            - نكمّل بصفر على اليسار لو أقل من 10
-            - وبعد كده 10 spaces
-        لو مفيش:
-            - نرجّع 20 spaces كاملة
-        """
-        if not mobile_phone:
-            return ' ' * 20
-
-        # تنظيف الرقم (نشيل + وأي شيء مش رقم)
-        digits = ''.join(filter(str.isdigit, mobile_phone))
-
-        # ناخد آخر 10 digits
-        digits = digits[-10:]
-
-        # نكمّل على الشمال بصفر لو أقل من 10
-        digits = digits.rjust(10, '0')
-
-        # نضيف 10 spaces بعدها
-        return digits + (' ' * 10)
-
     def _fmt_string_left(self, text, width):
         if text is None:
             text = ''
@@ -69,11 +45,11 @@ class HrPayslipRunText(models.AbstractModel):
                 bic = (slip.employee_id.res_partner_bank_ids[:1].bank_id.bic or '').strip()
                 spaces8 = ' ' * 8
                 acc_number = (slip.employee_id.res_partner_bank_ids[:1].acc_number or '').strip()
-                spaces11 = ' ' * 11
+                spaces11 = ' ' * 10
                 emp_name = self._fmt_string_left(slip.employee_id.name, 50)
                 pay_date = str(rec.get('pay_date') or '').replace('-', '')
                 static_num = '2000000'
-                mobile_field = self._fmt_mobile(slip.employee_id.mobile_phone)
+                mobile_field = slip.employee_id.mobile_phone or ''
 
                 # --- السطر الثاني ---
                 total_sum_field = self._fmt_amount_numeric(slip.total_sum, 15)
@@ -94,7 +70,7 @@ class HrPayslipRunText(models.AbstractModel):
                 zero_one = '0'
                 spaces30 = ' ' * 30
                 company_name = self._fmt_string_left(slip.company_id.name or '', 23)
-                first_line = f"{emp_no_field}{acc_number}{emp_name}{employee_no_field}{total_sum_field}{pay_date}{static_num}{mobile_field}{basic_field}{house_field}{other_field}{deduction_field}"
+                first_line = f"{emp_no_field}{acc_number}{emp_name}{employee_no_field}{total_sum_field}{pay_date}{static_num}{spaces11}{mobile_field}{basic_field}{house_field}{other_field}{deduction_field}"
                 report_lines.append(first_line)
 
 

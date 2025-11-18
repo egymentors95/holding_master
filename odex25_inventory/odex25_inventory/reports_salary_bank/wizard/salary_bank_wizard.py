@@ -149,6 +149,6 @@ class SalaryBankWizard(models.TransientModel):
         data = {
             'date_from': self.date_from,
             'date_to': self.date_to,
-            'vals': self.get_report_data()['combined_data'],
+            'vals': self.get_report_data_itqan()['combined_data'],
         }
         return self.env.ref('reports_salary_bank.report_action_salary_bank_text_itqan').report_action(self, data=data)
