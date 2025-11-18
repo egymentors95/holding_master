@@ -51,6 +51,10 @@ class HrPayslipRunText(models.AbstractModel):
                 pay_date = str(rec.get('pay_date') or '').replace('-', '')
                 static_num = '2000000'
                 mobile_field = slip.employee_id.mobile_phone or ''
+                if mobile_field:
+                    mobile_field = mobile_field
+                else:
+                    mobile_field = spaces11
 
                 # --- السطر الثاني ---
                 total_sum_field = self._fmt_amount_numeric(slip.total_sum, 15)
