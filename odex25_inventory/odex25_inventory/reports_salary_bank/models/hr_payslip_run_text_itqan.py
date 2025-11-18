@@ -44,7 +44,8 @@ class HrPayslipRunText(models.AbstractModel):
                 emp_no_field = self._fmt_integer_right(slip.employee_no, 12)
                 bic = (slip.employee_id.res_partner_bank_ids[:1].bank_id.bic or '').strip()
                 spaces8 = ' ' * 8
-                acc_number = (slip.employee_id.res_partner_bank_ids[:1].acc_number or '').strip()
+                acc_number_digit = (slip.employee_id.res_partner_bank_ids[:1].acc_number or '').strip()
+                acc_number = self._fmt_integer_right(acc_number_digit, 24)
                 spaces11 = ' ' * 10
                 emp_name = self._fmt_string_left(slip.employee_id.name, 50)
                 pay_date = str(rec.get('pay_date') or '').replace('-', '')
