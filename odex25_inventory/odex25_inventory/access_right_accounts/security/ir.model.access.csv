@@ -1,0 +1,11 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_group_model_account_move,access.group.model.account.move,account.model_account_move,access_right_accounts.group_normal_user,1,1,1,1
+access_group_model_account_move_line,access.group.model.account.move.line,account.model_account_move_line,access_right_accounts.group_normal_user,1,1,1,1
+access_group_model_account_payment,access.group.model.account.payment,account.model_account_payment,access_right_accounts.group_normal_user,1,1,1,1
+access_group_model_res_partner,access.group.model.res.partner,account.model_res_partner,access_right_accounts.group_normal_user,1,1,1,1
+access_group_model_product_template,access.group.model.product.template,product.model_product_template,access_right_accounts.group_normal_user,1,1,1,1
+access_group_model_account_invoice_report,access.group.model.account.invoice.report,account.model_account_invoice_report,access_right_accounts.group_normal_user,1,1,1,1
+access_group_model_account_account,access.group.model.account.account,account.model_account_account,access_right_accounts.group_normal_user,1,0,0,0
+access_group_model_product_margin,access.group.model.product.margin,product_margin.model_product_margin,access_right_accounts.group_normal_user,1,1,1,1
+
+access_group_model_hr_expense_sheet,access.group.model.hr.expense.sheet,hr_expense.model_hr_expense_sheet,,1,1,1,1

@@ -8,6 +8,54 @@
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
 
+            <xpath expr="//field[@name='order_line']" position="attributes">
+                <attribute name="attrs">{'readonly': [('state', 'in', ('done','cancel', 'sale'))]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='user_id']" position="attributes">
+                <attribute name="attrs">{'readonly': [('state', 'in', ('done','cancel', 'sale'))]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='team_id']" position="attributes">
+                <attribute name="attrs">{'readonly': [('state', 'in', ('done','cancel', 'sale'))]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='company_id']" position="attributes">
+                <attribute name="attrs">{'readonly': [('state', 'in', ('done','cancel', 'sale'))]}</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='require_signature']" position="attributes">
+                <attribute name="attrs">{'readonly': [('state', 'in', ('done','cancel', 'sale'))]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='require_payment']" position="attributes">
+                <attribute name="attrs">{'readonly': [('state', 'in', ('done','cancel', 'sale'))]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='client_order_ref']" position="attributes">
+                <attribute name="attrs">{'readonly': [('state', 'in', ('done','cancel', 'sale'))]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='warehouse_id']" position="attributes">
+                <attribute name="attrs">{'readonly': [('state', 'in', ('done','cancel', 'sale'))]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='picking_policy']" position="attributes">
+                <attribute name="attrs">{'readonly': [('state', 'in', ('done','cancel', 'sale'))]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='fiscal_position_id']" position="attributes">
+                <attribute name="attrs">{'readonly': [('state', 'in', ('done','cancel', 'sale'))]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='origin']" position="attributes">
+                <attribute name="attrs">{'readonly': [('state', 'in', ('done','cancel', 'sale'))]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='opportunity_id']" position="attributes">
+                <attribute name="attrs">{'readonly': [('state', 'in', ('done','cancel', 'sale'))]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='campaign_id']" position="attributes">
+                <attribute name="attrs">{'readonly': [('state', 'in', ('done','cancel', 'sale'))]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='medium_id']" position="attributes">
+                <attribute name="attrs">{'readonly': [('state', 'in', ('done','cancel', 'sale'))]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='source_id']" position="attributes">
+                <attribute name="attrs">{'readonly': [('state', 'in', ('done','cancel', 'sale'))]}</attribute>
+            </xpath>
+
+
             <xpath expr="//label[@for='pricelist_id']" position="replace">
                 <label for="pricelist_id" groups="editable_sale.group_editable_sale_order"/>
 
@@ -41,6 +89,7 @@
 
             <xpath expr="//field[@name='payment_term_id']" position="attributes">
                 <attribute name="groups">editable_sale.group_editable_sale_order</attribute>
+                <attribute name="attrs">{'readonly': [('state', 'in', ('done','cancel', 'sale'))]}</attribute>
             </xpath>
 
             <xpath expr="//field[@name='order_line']/tree/field[@name='customer_lead']" position="attributes">
@@ -101,6 +150,9 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='order_line']/tree/field[@name='route_id']" position="attributes">
                 <attribute name="groups">editable_sale.group_editable_sale_order</attribute>
+            </xpath>
+            <xpath expr="//tree/field[@name='product_packaging']" position="attributes">
+                <attribute name="attrs">{'column_invisible': 1}</attribute>
             </xpath>
 
 
