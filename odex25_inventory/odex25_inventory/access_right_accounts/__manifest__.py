@@ -10,7 +10,7 @@
     "depends": ["account", "hr_expense", "product_margin", "product", "base", 'account_budget_custom'],
     "data": [
         "security/security_views.xml",
-        # "security/ir.model.access.csv",
+        "security/ir.model.access.csv",
         "views/menuitem_views.xml",
     ],
     "installable": True,

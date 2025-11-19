@@ -57,5 +57,11 @@
                eval="[(4, ref('access_right_accounts.group_budget_account'))]"/>
     </record>
 
+    <menuitem id="new_chart_of_accounts_menu"
+              groups="access_right_accounts.group_vendor_purchase_account,access_right_accounts.group_customer_sales_account"
+              parent="account.menu_finance_entries"
+              name="Chart of Accounts"
+              action="account.action_account_form"/>
+
 
 </odoo>
