@@ -17,6 +17,7 @@
         "account",
         "odex25_account_asset",
         "mrp",
+        "ksa_zatca_integration",
     ],
     "data": [
         "security/groups_views.xml",
