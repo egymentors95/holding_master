@@ -9,6 +9,7 @@ class TotalPayslip(models.Model):
     date_to = fields.Date(string="Date To")
     comp_emp_code = fields.Char(string='Company Employee Code')
     emp_name = fields.Char(string='Employee Name')
+    mobile = fields.Char()
     # country_id = fields.Many2one(comodel_name='res.country', string='Country')
     id_number = fields.Char(string='ID Number')
     company_id = fields.Many2one('res.company', string='Company')

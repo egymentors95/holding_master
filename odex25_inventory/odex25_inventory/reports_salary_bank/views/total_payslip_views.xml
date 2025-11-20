@@ -10,6 +10,7 @@
                 <field name="date_to"/>
                 <field name="comp_emp_code"/>
                 <field name="emp_name"/>
+                <field name="mobile"/>
                 <field name="id_number"/>
                 <field name="company_id"/>
                 <field name="d_name" optional="hide"/>
