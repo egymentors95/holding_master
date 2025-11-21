@@ -7,7 +7,7 @@
     "author": "Aitecsoft",
     "website": "https://www.aitecsoft.com",
     "license": "AGPL-3",
-    "depends": ["account", "hr_expense", "product_margin", "product", "base", 'account_budget_custom'],
+    "depends": ["account", "hr_expense", "product_margin", "product", "base", 'account_budget_custom', 'odex25_account_reports'],
     "data": [
         "security/security_views.xml",
         "security/ir.model.access.csv",

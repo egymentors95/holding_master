@@ -15,10 +15,6 @@
         <field name="groups_id"
                eval="[(4, ref('access_right_accounts.group_vendor_purchase_account')), (4, ref('access_right_accounts.group_customer_sales_account'))]"/>
     </record>
-    <record id="account.menu_action_move_journal_line_form" model="ir.ui.menu">
-        <field name="groups_id"
-               eval="[(4, ref('access_right_accounts.group_vendor_purchase_account')), (4, ref('access_right_accounts.group_customer_sales_account'))]"/>
-    </record>
     <record id="account.menu_finance_entries_accounting_ledgers" model="ir.ui.menu">
         <field name="groups_id"
                eval="[(4, ref('access_right_accounts.group_vendor_purchase_account')), (4, ref('access_right_accounts.group_customer_sales_account'))]"/>
@@ -56,7 +52,33 @@
         <field name="groups_id"
                eval="[(4, ref('access_right_accounts.group_budget_account'))]"/>
     </record>
+    <!--           Reporting                   -->
+    <record id="account.menu_finance_reports" model="ir.ui.menu">
+        <field name="groups_id"
+               eval="[(6, 0, [ref('access_right_accounts.group_vendor_purchase_account')]),(6, 0, [ref('access_right_accounts.group_customer_sales_account')])]"/>
+    </record>
+    <record id="account.account_reports_management_menu" model="ir.ui.menu">
+        <field name="groups_id"
+               eval="[(4, ref('access_right_accounts.group_manager_reporting_account'))]"/>
+    </record>
+    <record id="account.account_reports_legal_statements_menu" model="ir.ui.menu">
+        <field name="groups_id"
+               eval="[(4, ref('access_right_accounts.group_manager_reporting_account'))]"/>
+    </record>
+    <record id="odex25_account_reports.account_reports_partners_reports_menu" model="ir.ui.menu">
+        <field name="groups_id"
+               eval="[(4, ref('access_right_accounts.group_vendor_purchase_account')), (4, ref('access_right_accounts.group_customer_sales_account'))]"/>
+    </record>
 
+    <record id="odex25_account_reports.menu_action_account_report_partner_ledger" model="ir.ui.menu">
+        <field name="groups_id"
+               eval="[(4, ref('access_right_accounts.group_vendor_purchase_account')), (4, ref('access_right_accounts.group_customer_sales_account'))]"/>
+    </record>
+    <record id="odex25_account_reports.menu_action_account_report_general_ledger" model="ir.ui.menu">
+        <field name="groups_id"
+               eval="[(4, ref('access_right_accounts.group_vendor_purchase_account')), (4, ref('access_right_accounts.group_customer_sales_account'))]"/>
+    </record>
+    <!--______________________________________________________________________________________-->
     <menuitem id="new_chart_of_accounts_menu"
               groups="access_right_accounts.group_vendor_purchase_account,access_right_accounts.group_customer_sales_account"
               parent="account.menu_finance_entries"
