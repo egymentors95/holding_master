@@ -20,6 +20,7 @@ class TotalSalaryBank(models.Model):
         required=True,
         default='atm'
     )
+    is_overtime = fields.Boolean(string="اضافي", default=False)
 
     def get_report_data(self):
         combined_data = []

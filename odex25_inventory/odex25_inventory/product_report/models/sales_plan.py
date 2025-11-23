@@ -29,10 +29,10 @@ class SalesPlan(models.Model):
             else:
                 record.average = 0.0
 
-    @api.depends('sales_plan_line_ids.price_total_per_month')
+    @api.depends('sales_plan_line_ids.price_total')
     def _compute_total(self):
         for record in self:
-            total = sum(line.price_total_per_month for line in record.sales_plan_line_ids)
+            total = sum(line.price_total for line in record.sales_plan_line_ids)
             record.total_value = total
 
     @api.depends('sales_person_id')

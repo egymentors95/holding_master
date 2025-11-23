@@ -19,6 +19,7 @@
                             <group>
                                 <field name="earn_date"/>
                                 <field name="pay_date" />
+                                <field name="is_overtime" />
                             </group>
                         </group>
                     </sheet>

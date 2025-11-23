@@ -150,6 +150,10 @@
                    position="attributes">
                 <attribute name="string">الشرح</attribute>
             </xpath>
+             <xpath expr="//field[@name='line_ids']/tree/field[@name='currency_id']"
+                   position="attributes">
+                <attribute name="attrs">{'readonly':1}</attribute>
+            </xpath>
 
 
         </field>
