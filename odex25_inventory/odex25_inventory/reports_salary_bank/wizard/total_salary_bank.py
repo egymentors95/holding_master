@@ -13,7 +13,7 @@ class TotalSalaryBank(models.Model):
     sponsor_name_id = fields.Many2one(comodel_name='sponsor.name', string='اسم الكفيل')
     payment_method = fields.Selection(
         selection=[
-            ('atm', 'Atm'),
+            ('bank', 'Atm'),
             ('itqan', 'اتقان'),
         ],
         string='Payment Method',
@@ -91,7 +91,7 @@ class TotalSalaryBank(models.Model):
         if self.date_from and self.date_to and self.date_from > self.date_to:
             raise UserError("Date From must be before or equal to Date To.")
 
-        bank_ids = self.env['hr.payslip.run'].sudo().search([
+        bank_ids = self.env['total.payslip'].sudo().search([
             ('date_from', '>=', self.date_from),
             ('date_to', '<=', self.date_to),
             ('payment_method', '=', 'itqan'),
