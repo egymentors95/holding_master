@@ -20,7 +20,6 @@ class TotalSalaryBank(models.Model):
         required=True,
         default='atm'
     )
-    is_overtime = fields.Boolean(string="اضافي", default=False)
 
     def get_report_data(self):
         combined_data = []
@@ -36,6 +35,8 @@ class TotalSalaryBank(models.Model):
             ('payment_method', '=', 'bank'),
             ('sponsor_name_id', '=', self.sponsor_name_id.id),
         ])
+        if not bank_ids:
+            raise UserError("لا توجد بيانات لموظفين بنفس الكفيل المحدد في الفترة المحددة.")
 
         # -------------------------------
         # Loop
@@ -67,10 +68,8 @@ class TotalSalaryBank(models.Model):
 
 
             })
-            if not combined_data:
-                raise UserError("لا توجد بيانات لموظفين بنفس الكفيل المحدد في الفترة المحددة.")
 
-            return {'combined_data': combined_data}
+        return {'combined_data': combined_data}
 
     def action_print_report_text(self):
         self.ensure_one()
@@ -97,6 +96,8 @@ class TotalSalaryBank(models.Model):
             ('payment_method', '=', 'itqan'),
             ('sponsor_name_id', '=', self.sponsor_name_id.id),
         ])
+        if not bank_ids:
+            raise UserError("لا توجد بيانات لموظفين بنفس الكفيل المحدد في الفترة المحددة.")
 
         # -------------------------------
         # Loop
@@ -124,10 +125,8 @@ class TotalSalaryBank(models.Model):
                 'line_ids': bank_ids.ids,
 
             })
-            if not combined_data:
-                raise UserError("لا توجد بيانات لموظفين بنفس الكفيل المحدد في الفترة المحددة.")
 
-            return {'combined_data': combined_data}
+        return {'combined_data': combined_data}
 
     def action_print_report_text_itqan(self):
         self.ensure_one()
