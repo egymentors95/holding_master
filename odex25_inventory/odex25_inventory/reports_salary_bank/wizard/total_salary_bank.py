@@ -36,8 +36,6 @@ class TotalSalaryBank(models.Model):
             ('payment_method', '=', 'bank'),
             ('sponsor_name_id', '=', self.sponsor_name_id.id),
         ])
-        if not bank_ids:
-            raise UserError("لا توجد بيانات لموظفين بنفس الكفيل المحدد في الفترة المحددة.")
 
         # -------------------------------
         # Loop
@@ -97,8 +95,6 @@ class TotalSalaryBank(models.Model):
             ('payment_method', '=', 'itqan'),
             ('sponsor_name_id', '=', self.sponsor_name_id.id),
         ])
-        if not bank_ids:
-            raise UserError("لا توجد بيانات لموظفين بنفس الكفيل المحدد في الفترة المحددة.")
 
         # -------------------------------
         # Loop
