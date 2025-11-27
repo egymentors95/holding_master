@@ -24,7 +24,7 @@
                         </group>
                     </sheet>
                     <footer>
-                        <button string="Print Text" name="action_print_report_text" type="object" class="btn-primary" attrs="{'invisible': [('payment_method', '!=', 'atm')]}"/>
+                        <button string="Print Text" name="action_print_report_text" type="object" class="btn-primary" attrs="{'invisible': [('payment_method', '!=', 'bank')]}"/>
                         <button string="Print Text" name="action_print_report_text_itqan" type="object" class="btn-primary" attrs="{'invisible': [('payment_method', '!=', 'itqan')]}"/>
                         <button string="Cancel" class="btn-secondary" special="cancel"/>
                     </footer>
