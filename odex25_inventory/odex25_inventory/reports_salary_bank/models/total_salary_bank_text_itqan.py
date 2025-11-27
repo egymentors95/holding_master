@@ -38,7 +38,8 @@ class HrPayslipRunTextIqan(models.AbstractModel):
         for rec in vals:
 
             # ===== تفاصيل الموظفين =====
-            payslips = vals.get('line_ids', [])
+            payslips = self.env['total.payslip'].browse(rec.get('line_ids', []))
+
             for slip in payslips:
                 # --- السطر الأول ---
                 emp_no_field = self._fmt_integer_right(slip.id_number, 12)
