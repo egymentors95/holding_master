@@ -15,8 +15,8 @@ class TotalPayslip(models.Model):
     company_id = fields.Many2one('res.company', string='Company')
     d_name = fields.Char(string='Department Name')
     payment_method = fields.Selection([
-        ('cash', 'Cash Payment'),
-        ('bank', 'Bank Transfer'),
+        ('cash', 'Cash'),
+        ('bank', 'Bank'),
         ('itqan', 'اتقان')
     ], string='Payment Method')
     account_number = fields.Char(string='Account Number')

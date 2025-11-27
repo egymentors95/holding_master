@@ -59,9 +59,9 @@ class HrPayslipRunTextIqan(models.AbstractModel):
                 employee_no_field = self._fmt_integer_right(iqama, 10)
                 basic_field = self._fmt_amount_numeric(getattr(slip, 'basic_allowances', 0.0), 12)
                 house_field = self._fmt_amount_numeric(getattr(slip, 'house_allowances', 0.0), 12)
-                collection_trans_other = slip.other_allowances + slip.trans_allowances
+                collection_trans_other = slip.other_allowances + slip.transport_allowance
                 other_field = self._fmt_amount_numeric(collection_trans_other, 12)
-                deduction_value = abs(getattr(slip, 'total_deductions', 0.0))
+                deduction_value = abs(getattr(slip, 'other_deductions', 0.0))
                 deduction_field = self._fmt_amount_numeric(deduction_value, 12)
                 first_line = f"{emp_no_field}{acc_number}{emp_name}{employee_no_field}{total_sum_field}{pay_date}{static_num}{spaces11}{mobile}{basic_field}{house_field}{other_field}{deduction_field}"
                 report_lines.append(first_line)
