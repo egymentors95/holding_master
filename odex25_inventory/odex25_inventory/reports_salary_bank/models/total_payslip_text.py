@@ -58,7 +58,7 @@ class HrPayslipRunText(models.AbstractModel):
             report_lines.append(header)
 
             # ===== تفاصيل الموظفين =====
-            payslips = self.env['total.salary.bank'].sudo().browse(rec.get('line_ids', []))
+            payslips = vals.get('line_ids', [])
             for slip in payslips:
                 # --- السطر الأول ---
                 emp_no_field = self._fmt_integer_right(slip.id_number, 12)
