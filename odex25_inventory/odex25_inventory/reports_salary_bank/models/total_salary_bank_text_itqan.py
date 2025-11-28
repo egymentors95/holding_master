@@ -35,36 +35,39 @@ class HrPayslipRunTextIqan(models.AbstractModel):
         vals = data.get('vals', [])
         report_lines = []
 
-        for rec in vals:
+        if not vals:
+            return {}
+
+        rec = vals[0]
 
             # ===== تفاصيل الموظفين =====
-            payslips = self.env['total.payslip'].browse(rec.get('line_ids', []))
+        payslips = self.env['total.payslip'].browse(rec.get('line_ids', []))
 
-            for slip in payslips:
-                # --- السطر الأول ---
-                emp_no_field = self._fmt_integer_right(slip.id_number, 12)
-                acc_number_digit = (slip.account_number or '').strip()
-                acc_number = self._fmt_integer_right(acc_number_digit, 24)
-                spaces11 = ' ' * 10
-                emp_name = self._fmt_string_left(slip.emp_name, 50)
-                pay_date = str(rec.get('pay_date') or '').replace('-', '')
-                static_num = '2000000'
-                mobile_field = slip.mobile or ''
-                mobile = self._fmt_string_left(mobile_field, 10)
+        for slip in payslips:
+            # --- السطر الأول ---
+            emp_no_field = self._fmt_integer_right(slip.id_number, 12)
+            acc_number_digit = (slip.account_number or '').strip()
+            acc_number = self._fmt_integer_right(acc_number_digit, 24)
+            spaces11 = ' ' * 10
+            emp_name = self._fmt_string_left(slip.emp_name, 50)
+            pay_date = str(rec.get('pay_date') or '').replace('-', '')
+            static_num = '2000000'
+            mobile_field = slip.mobile or ''
+            mobile = self._fmt_string_left(mobile_field, 10)
 
-                # --- السطر الثاني ---
-                total_sum_field = self._fmt_amount_numeric(slip.net_salary, 15)
+            # --- السطر الثاني ---
+            total_sum_field = self._fmt_amount_numeric(slip.net_salary, 15)
 
-                iqama = slip.id_number
-                employee_no_field = self._fmt_integer_right(iqama, 10)
-                basic_field = self._fmt_amount_numeric(getattr(slip, 'basic_allowances', 0.0), 12)
-                house_field = self._fmt_amount_numeric(getattr(slip, 'house_allowances', 0.0), 12)
-                collection_trans_other = slip.other_allowances + slip.transport_allowance
-                other_field = self._fmt_amount_numeric(collection_trans_other, 12)
-                deduction_value = abs(getattr(slip, 'other_deductions', 0.0))
-                deduction_field = self._fmt_amount_numeric(deduction_value, 12)
-                first_line = f"{emp_no_field}{acc_number}{emp_name}{employee_no_field}{total_sum_field}{pay_date}{static_num}{spaces11}{mobile}{basic_field}{house_field}{other_field}{deduction_field}"
-                report_lines.append(first_line)
+            iqama = slip.id_number
+            employee_no_field = self._fmt_integer_right(iqama, 10)
+            basic_field = self._fmt_amount_numeric(getattr(slip, 'basic_allowances', 0.0), 12)
+            house_field = self._fmt_amount_numeric(getattr(slip, 'house_allowances', 0.0), 12)
+            collection_trans_other = slip.other_allowances + slip.transport_allowance
+            other_field = self._fmt_amount_numeric(collection_trans_other, 12)
+            deduction_value = abs(getattr(slip, 'other_deductions', 0.0))
+            deduction_field = self._fmt_amount_numeric(deduction_value, 12)
+            first_line = f"{emp_no_field}{acc_number}{emp_name}{employee_no_field}{total_sum_field}{pay_date}{static_num}{spaces11}{mobile}{basic_field}{house_field}{other_field}{deduction_field}"
+            report_lines.append(first_line)
 
 
 

@@ -31,11 +31,12 @@ class TotalSalaryBank(models.Model):
             raise UserError("Date From must be before or equal to Date To.")
 
         bank_ids = self.env['total.payslip'].sudo().search([
-            ('date_from', '=', self.date_to),
-            ('date_to', '=', self.date_from),
+            ('date_from', '<=', self.date_to),
+            ('date_to', '>=', self.date_from),
             ('payment_method', '=', 'bank'),
             ('sponsor_name_id', '=', self.sponsor_name_id.id),
         ])
+        print('bank_ids bank', bank_ids)
 
         # -------------------------------
         # Loop
@@ -90,11 +91,12 @@ class TotalSalaryBank(models.Model):
             raise UserError("Date From must be before or equal to Date To.")
 
         bank_ids = self.env['total.payslip'].sudo().search([
-            ('date_from', '=', self.date_to),
-            ('date_to', '=', self.date_from),
+            ('date_from', '<=', self.date_to),
+            ('date_to', '>=', self.date_from),
             ('payment_method', '=', 'itqan'),
             ('sponsor_name_id', '=', self.sponsor_name_id.id),
         ])
+        print('bank_ids itqan', bank_ids)
 
         # -------------------------------
         # Loop

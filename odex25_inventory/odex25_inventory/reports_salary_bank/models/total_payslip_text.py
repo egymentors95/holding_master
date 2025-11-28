@@ -35,62 +35,66 @@ class HrPayslipRunText(models.AbstractModel):
         vals = data.get('vals', [])
         report_lines = []
 
-        for rec in vals:
-            # ===== الهيدر =====
-            earn_date = str(rec.get('earn_date') or '').replace('-', '')
-            pay_date = str(rec.get('pay_date') or '').replace('-', '')
-            total_net_salary_field = self._fmt_amount_numeric(rec.get('total_net_salary', 0.0), 15)
-            total_employees_field = self._fmt_integer_right(rec.get('total_employees', 0), 8)
-            iban_sponsor = rec.get('iban_sponsor') or ''
-            currency = rec.get('currency') or ''
-            date_time_now = fields.Datetime.now().strftime('%Y%m%d%H%M%S') + '16'
-            sponsor_bn_digits = ''.join(ch for ch in str(rec.get('sponsor_bank_number') or '') if ch.isdigit())
-            sponsor_bank_number_field = sponsor_bn_digits.rjust(16, '0')[-16:]
-            labor_office_number_field = self._fmt_string_left(rec.get('labor_office_number') or '', 18)
+        if not vals:
+            return {}
 
-            header = (
-                f"{'0'*12}G{earn_date}{pay_date}"
-                f"{total_net_salary_field}{total_employees_field}"
-                f"{iban_sponsor}{currency}E01{date_time_now}"
-                f"{sponsor_bank_number_field}{labor_office_number_field}"
-                f"PAYR{' '*6}Payroll{' '*151}"
-            )
-            report_lines.append(header)
+        rec = vals[0]
+        # ===== الهيدر =====
+        earn_date = str(rec.get('earn_date') or '').replace('-', '')
+        pay_date = str(rec.get('pay_date') or '').replace('-', '')
+        total_net_salary_field = self._fmt_amount_numeric(rec.get('total_net_salary', 0.0), 15)
+        total_employees_field = self._fmt_integer_right(rec.get('total_employees', 0), 8)
+        iban_sponsor = rec.get('iban_sponsor') or ''
+        currency = rec.get('currency') or ''
+        date_time_now = fields.Datetime.now().strftime('%Y%m%d%H%M%S') + '16'
+        sponsor_bn_digits = ''.join(ch for ch in str(rec.get('sponsor_bank_number') or '') if ch.isdigit())
+        sponsor_bank_number_field = sponsor_bn_digits.rjust(16, '0')[-16:]
+        labor_office_number_field = self._fmt_string_left(rec.get('labor_office_number') or '', 18)
 
-            # ===== تفاصيل الموظفين =====
-            payslips = self.env['total.payslip'].browse(rec.get('line_ids', []))
+        header = (
+            f"{'0'*12}G{earn_date}{pay_date}"
+            f"{total_net_salary_field}{total_employees_field}"
+            f"{iban_sponsor}{currency}E01{date_time_now}"
+            f"{sponsor_bank_number_field}{labor_office_number_field}"
+            f"PAYR{' '*6}Payroll{' '*151}"
+        )
+        report_lines.append(header)
 
-            for slip in payslips:
-                # --- السطر الأول ---
-                emp_no_field = self._fmt_integer_right(slip.id_number, 12)
-                bic = (slip.bic or '').strip()
-                spaces8 = ' ' * 8
-                acc_number = (slip.account_number or '').strip()
-                spaces11 = ' ' * 11
-                emp_name = self._fmt_string_left(slip.emp_name, 50)
+        # ===== تفاصيل الموظفين =====
+        payslips = self.env['total.payslip'].browse(rec.get('line_ids', []))
+        print('payslips', payslips)
 
-                # --- السطر الثاني ---
-                total_sum_field = self._fmt_amount_numeric(slip.net_salary, 15)
-                # iqama = None
-                # if slip.employee_id.country_id.code == 'SA':
-                #     iqama = slip.employee_id.saudi_number.saudi_id
-                # else:
-                iqama = slip.id_number
-                employee_no_field = self._fmt_integer_right(iqama, 10)
-                basic_field = self._fmt_amount_numeric(getattr(slip, 'basic_allowances', 0.0), 18)
-                house_field = self._fmt_amount_numeric(getattr(slip, 'house_allowances', 0.0), 12)
-                collection_trans_other = slip.other_allowances + slip.transport_allowance
-                other_field = self._fmt_amount_numeric(collection_trans_other, 12)
-                deduction_value = abs(getattr(slip, 'other_deductions', 0.0))
-                deduction_field = self._fmt_amount_numeric(deduction_value, 12)
-                currency_field = currency
-                five_zeros = '00000'
-                spaces50 = ' ' * 50
-                zero_one = '0'
-                spaces30 = ' ' * 30
-                company_name = self._fmt_string_left(slip.company_id.name or '', 23)
-                first_line = f"{emp_no_field}{bic}{spaces8}{acc_number}{spaces11}{emp_name}{total_sum_field}{employee_no_field}{basic_field}{house_field}{other_field}{deduction_field}{currency_field}{five_zeros}{spaces50}{zero_one}{spaces30}{company_name}"
-                report_lines.append(first_line)
+        for slip in payslips:
+            # --- السطر الأول ---
+            emp_no_field = self._fmt_integer_right(slip.id_number, 12)
+            bic = (slip.bic or '').strip()
+            spaces8 = ' ' * 8
+            acc_number = (slip.account_number or '').strip()
+            spaces11 = ' ' * 11
+            emp_name = self._fmt_string_left(slip.emp_name, 50)
+
+            # --- السطر الثاني ---
+            total_sum_field = self._fmt_amount_numeric(slip.net_salary, 15)
+            # iqama = None
+            # if slip.employee_id.country_id.code == 'SA':
+            #     iqama = slip.employee_id.saudi_number.saudi_id
+            # else:
+            iqama = slip.id_number
+            employee_no_field = self._fmt_integer_right(iqama, 10)
+            basic_field = self._fmt_amount_numeric(getattr(slip, 'basic_allowances', 0.0), 18)
+            house_field = self._fmt_amount_numeric(getattr(slip, 'house_allowances', 0.0), 12)
+            collection_trans_other = slip.other_allowances + slip.transport_allowance
+            other_field = self._fmt_amount_numeric(collection_trans_other, 12)
+            deduction_value = abs(getattr(slip, 'other_deductions', 0.0))
+            deduction_field = self._fmt_amount_numeric(deduction_value, 12)
+            currency_field = currency
+            five_zeros = '00000'
+            spaces50 = ' ' * 50
+            zero_one = '0'
+            spaces30 = ' ' * 30
+            company_name = self._fmt_string_left(slip.company_id.name or '', 23)
+            first_line = f"{emp_no_field}{bic}{spaces8}{acc_number}{spaces11}{emp_name}{total_sum_field}{employee_no_field}{basic_field}{house_field}{other_field}{deduction_field}{currency_field}{five_zeros}{spaces50}{zero_one}{spaces30}{company_name}"
+            report_lines.append(first_line)
 
 
 
