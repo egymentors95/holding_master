@@ -81,8 +81,8 @@ class HrPayslipRunText(models.AbstractModel):
             # else:
             iqama = slip.id_number
             employee_no_field = self._fmt_integer_right(iqama, 10)
-            basic_field = self._fmt_amount_numeric(getattr(slip, 'basic_allowances', 0.0), 18)
-            house_field = self._fmt_amount_numeric(getattr(slip, 'house_allowances', 0.0), 12)
+            basic_field = self._fmt_amount_numeric(getattr(slip, 'basic_salary', 0.0), 18)
+            house_field = self._fmt_amount_numeric(getattr(slip, 'housing_allowance', 0.0), 12)
             collection_trans_other = slip.other_allowances + slip.transport_allowance
             other_field = self._fmt_amount_numeric(collection_trans_other, 12)
             deduction_value = abs(getattr(slip, 'other_deductions', 0.0))
