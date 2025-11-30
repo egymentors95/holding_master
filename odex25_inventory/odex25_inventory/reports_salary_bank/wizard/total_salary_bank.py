@@ -36,15 +36,21 @@ class TotalSalaryBank(models.Model):
             ('payment_method', '=', 'bank'),
             ('sponsor_name_id', '=', self.sponsor_name_id.id),
         ])
-        print('bank_ids bank', bank_ids)
+        if self.is_overtime:
+            bonus = sum(b.bonus for b in bank_ids)
+            overtime = sum(b.overtime for b in bank_ids)
+            other_earnings = sum(b.other_earnings for b in bank_ids)
+            total_net_salary = bonus + overtime + other_earnings
+        else:
+            total_net_salary = sum(b.net_salary for b in bank_ids)
+
+        total_employees = len(bank_ids)
 
         # -------------------------------
         # Loop
         # -------------------------------
         for bank in bank_ids:
 
-            total_net_salary = sum(b.net_salary for b in bank_ids)
-            total_employees = len(bank_ids)
             iban_sponsor = self.sponsor_name_id.iban_number or ''
             sponsor_bank_number = self.sponsor_name_id.sponsor_bank_number
             labor_office_number = self.sponsor_name_id.labor_office_number
