@@ -50,6 +50,7 @@ class HrPayslipRunText(models.AbstractModel):
         sponsor_bn_digits = ''.join(ch for ch in str(rec.get('sponsor_bank_number') or '') if ch.isdigit())
         sponsor_bank_number_field = sponsor_bn_digits.rjust(16, '0')[-16:]
         labor_office_number_field = self._fmt_string_left(rec.get('labor_office_number') or '', 18)
+        is_overtime = rec.get('is_overtime')
 
         header = (
             f"{'0'*12}G{earn_date}{pay_date}"
@@ -73,20 +74,30 @@ class HrPayslipRunText(models.AbstractModel):
             spaces11 = ' ' * 11
             emp_name = self._fmt_string_left(slip.emp_name, 50)
 
+
+            if not is_overtime:
             # --- السطر الثاني ---
-            total_sum_field = self._fmt_amount_numeric(slip.net_salary, 15)
-            # iqama = None
-            # if slip.employee_id.country_id.code == 'SA':
-            #     iqama = slip.employee_id.saudi_number.saudi_id
-            # else:
+                total_sum_field = self._fmt_amount_numeric(slip.net_salary, 15)
+                basic_field = self._fmt_amount_numeric(getattr(slip, 'basic_salary', 0.0), 18)
+                house_field = self._fmt_amount_numeric(getattr(slip, 'housing_allowance', 0.0), 12)
+                collection_trans_other = slip.other_allowances + slip.transport_allowance + slip.food_allowance + slip.natural + slip.bonus
+                other_field = self._fmt_amount_numeric(collection_trans_other, 12)
+                deduction_value = abs(getattr(slip, 'other_deductions', 0.0)) + abs(getattr(slip, 'loan_installment', 0.0))
+                deduction_field = self._fmt_amount_numeric(deduction_value, 12)
+            else:
+                new_net_salary = slip.bonus + slip.overtime + slip.other_earnings
+                total_sum_field = self._fmt_amount_numeric(new_net_salary, 15)
+                basic_field = self._fmt_amount_numeric(new_net_salary,  18)
+                house_field = self._fmt_amount_numeric( 0.0, 12)
+                collection_trans_other = slip.other_allowances + slip.transport_allowance + slip.food_allowance + slip.natural
+                other_field = self._fmt_amount_numeric(0, 12)
+                deduction_value = abs(getattr(slip, 'other_deductions', 0.0)) + abs(getattr(slip, 'loan_installment', 0.0))
+                deduction_field = self._fmt_amount_numeric(0, 12)
+
+
+
             iqama = slip.id_number
             employee_no_field = self._fmt_integer_right(iqama, 10)
-            basic_field = self._fmt_amount_numeric(getattr(slip, 'basic_salary', 0.0), 18)
-            house_field = self._fmt_amount_numeric(getattr(slip, 'housing_allowance', 0.0), 12)
-            collection_trans_other = slip.other_allowances + slip.transport_allowance + slip.food_allowance + slip.natural + slip.bonus
-            other_field = self._fmt_amount_numeric(collection_trans_other, 12)
-            deduction_value = abs(getattr(slip, 'other_deductions', 0.0)) + abs(getattr(slip, 'loan_installment', 0.0))
-            deduction_field = self._fmt_amount_numeric(deduction_value, 12)
             currency_field = currency
             five_zeros = '00000'
             spaces50 = ' ' * 50

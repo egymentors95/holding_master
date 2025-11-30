@@ -49,7 +49,7 @@ class TotalSalaryBank(models.Model):
             sponsor_bank_number = self.sponsor_name_id.sponsor_bank_number
             labor_office_number = self.sponsor_name_id.labor_office_number
             currency = bank.company_id.currency_id.name
-
+            is_overtime = self.is_overtime
 
 
             # -------- Append --------
@@ -63,6 +63,7 @@ class TotalSalaryBank(models.Model):
                 'date_time_now': date_time_now,
                 'sponsor_bank_number': sponsor_bank_number,
                 'labor_office_number': labor_office_number,
+                'is_overtime': is_overtime,
                 'line_ids': bank_ids.ids,
 
 
@@ -109,6 +110,7 @@ class TotalSalaryBank(models.Model):
             sponsor_bank_number = self.sponsor_name_id.sponsor_bank_number
             labor_office_number = self.sponsor_name_id.labor_office_number
             currency = bank.company_id.currency_id.name
+            is_overtime = self.is_overtime
 
             # -------- Append --------
             combined_data.append({
@@ -121,6 +123,7 @@ class TotalSalaryBank(models.Model):
                 'date_time_now': date_time_now,
                 'sponsor_bank_number': sponsor_bank_number,
                 'labor_office_number': labor_office_number,
+                'is_overtime': is_overtime,
                 'line_ids': bank_ids.ids,
 
             })

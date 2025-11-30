@@ -42,7 +42,7 @@ class HrPayslipRunTextIqan(models.AbstractModel):
 
             # ===== تفاصيل الموظفين =====
         payslips = self.env['total.payslip'].browse(rec.get('line_ids', []))
-
+        is_overtime = rec.get('is_overtime')
         for slip in payslips:
             # --- السطر الأول ---
             emp_no_field = self._fmt_integer_right(slip.id_number, 12)
@@ -55,17 +55,27 @@ class HrPayslipRunTextIqan(models.AbstractModel):
             mobile_field = slip.mobile or ''
             mobile = self._fmt_string_left(mobile_field, 10)
 
+            if not is_overtime:
             # --- السطر الثاني ---
-            total_sum_field = self._fmt_amount_numeric(slip.net_salary, 15)
+                total_sum_field = self._fmt_amount_numeric(slip.net_salary, 15)
+                basic_field = self._fmt_amount_numeric(getattr(slip, 'basic_salary', 0.0), 18)
+                house_field = self._fmt_amount_numeric(getattr(slip, 'housing_allowance', 0.0), 12)
+                collection_trans_other = slip.other_allowances + slip.transport_allowance + slip.food_allowance + slip.natural + slip.bonus
+                other_field = self._fmt_amount_numeric(collection_trans_other, 12)
+                deduction_value = abs(getattr(slip, 'other_deductions', 0.0)) + abs(getattr(slip, 'loan_installment', 0.0))
+                deduction_field = self._fmt_amount_numeric(deduction_value, 12)
+            else:
+                new_net_salary = slip.bonus + slip.overtime + slip.other_earnings
+                total_sum_field = self._fmt_amount_numeric(new_net_salary, 15)
+                basic_field = self._fmt_amount_numeric(new_net_salary,  18)
+                house_field = self._fmt_amount_numeric( 0.0, 12)
+                collection_trans_other = slip.other_allowances + slip.transport_allowance + slip.food_allowance + slip.natural
+                other_field = self._fmt_amount_numeric(0, 12)
+                deduction_value = abs(getattr(slip, 'other_deductions', 0.0)) + abs(getattr(slip, 'loan_installment', 0.0))
+                deduction_field = self._fmt_amount_numeric(0, 12)
 
             iqama = slip.id_number
             employee_no_field = self._fmt_integer_right(iqama, 10)
-            basic_field = self._fmt_amount_numeric(getattr(slip, 'basic_salary', 0.0), 12)
-            house_field = self._fmt_amount_numeric(getattr(slip, 'housing_allowance', 0.0), 12)
-            collection_trans_other = slip.other_allowances + slip.transport_allowance + slip.food_allowance + slip.natural + slip.bonus
-            other_field = self._fmt_amount_numeric(collection_trans_other, 12)
-            deduction_value = abs(getattr(slip, 'other_deductions', 0.0)) + abs(getattr(slip, 'loan_installment', 0.0))
-            deduction_field = self._fmt_amount_numeric(deduction_value, 12)
             first_line = f"{emp_no_field}{acc_number}{emp_name}{employee_no_field}{total_sum_field}{pay_date}{static_num}{spaces11}{mobile}{basic_field}{house_field}{other_field}{deduction_field}"
             report_lines.append(first_line)
 
