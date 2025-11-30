@@ -102,12 +102,14 @@ class TotalSalaryBank(models.Model):
         # -------------------------------
         # Loop  slip.bonus + slip.overtime + slip.other_earnings
         # -------------------------------
-        total_net_salary = sum(b.net_salary for b in bank_ids)
+        total_net_salary = 0
         if self.is_overtime:
             bonus = sum(b.bonus for b in bank_ids)
             overtime = sum(b.overtime for b in bank_ids)
             other_earnings = sum(b.other_earnings for b in bank_ids)
             total_net_salary = bonus + overtime + other_earnings
+        else:
+            total_net_salary = sum(b.net_salary for b in bank_ids)
 
         total_employees = len(bank_ids)
         for bank in bank_ids:
