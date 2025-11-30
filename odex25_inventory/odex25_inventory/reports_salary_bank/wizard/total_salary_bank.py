@@ -100,17 +100,25 @@ class TotalSalaryBank(models.Model):
         print('bank_ids itqan', bank_ids)
 
         # -------------------------------
-        # Loop
+        # Loop  slip.bonus + slip.overtime + slip.other_earnings
         # -------------------------------
+        total_net_salary = sum(b.net_salary for b in bank_ids)
+        if self.is_overtime:
+            bonus = sum(b.bonus for b in bank_ids)
+            overtime = sum(b.overtime for b in bank_ids)
+            other_earnings = sum(b.other_earnings for b in bank_ids)
+            total_net_salary = bonus + overtime + other_earnings
+
+        total_employees = len(bank_ids)
         for bank in bank_ids:
 
-            total_net_salary = sum(b.net_salary for b in bank_ids)
-            total_employees = len(bank_ids)
             iban_sponsor = self.sponsor_name_id.iban_number or ''
             sponsor_bank_number = self.sponsor_name_id.sponsor_bank_number
             labor_office_number = self.sponsor_name_id.labor_office_number
             currency = bank.company_id.currency_id.name
             is_overtime = self.is_overtime
+
+
 
             # -------- Append --------
             combined_data.append({
