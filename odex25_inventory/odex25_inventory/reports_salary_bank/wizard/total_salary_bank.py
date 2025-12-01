@@ -10,7 +10,8 @@ class TotalSalaryBank(models.Model):
     date_to = fields.Date(string="Date To", required=True)
     earn_date = fields.Date(string="تاريخ استحقاق", required=True)
     pay_date = fields.Date(string="تاريخ الصرف", required=True)
-    sponsor_name_id = fields.Many2one(comodel_name='sponsor.name', string='اسم الكفيل')
+    # sponsor_name_id = fields.Many2one(comodel_name='sponsor.name', string='اسم الكفيل')
+    sponsor_name_ids = fields.Many2many(comodel_name='sponsor.name', string='اسم الكفيل',)
     payment_method = fields.Selection(
         selection=[
             ('bank', 'Atm'),
@@ -34,7 +35,7 @@ class TotalSalaryBank(models.Model):
             ('date_from', '<=', self.date_to),
             ('date_to', '>=', self.date_from),
             ('payment_method', '=', 'bank'),
-            ('sponsor_name_id', '=', self.sponsor_name_id.id),
+            ('sponsor_name_id', 'in', self.sponsor_name_ids.ids),
         ])
         if self.is_overtime:
             bonus = sum(b.bonus for b in bank_ids)
@@ -50,10 +51,10 @@ class TotalSalaryBank(models.Model):
         # Loop
         # -------------------------------
         for bank in bank_ids:
-
-            iban_sponsor = self.sponsor_name_id.iban_number or ''
-            sponsor_bank_number = self.sponsor_name_id.sponsor_bank_number
-            labor_office_number = self.sponsor_name_id.labor_office_number
+            record = self.sponsor_name_ids[:1]
+            iban_sponsor = record.iban_number or ''
+            sponsor_bank_number = record.sponsor_bank_number
+            labor_office_number = record.labor_office_number
             currency = bank.company_id.currency_id.name
             is_overtime = self.is_overtime
 
@@ -101,7 +102,8 @@ class TotalSalaryBank(models.Model):
             ('date_from', '<=', self.date_to),
             ('date_to', '>=', self.date_from),
             ('payment_method', '=', 'itqan'),
-            ('sponsor_name_id', '=', self.sponsor_name_id.id),
+            ('sponsor_name_id', 'in', self.sponsor_name_ids.ids),
+
         ])
         print('bank_ids itqan', bank_ids)
 
@@ -120,9 +122,10 @@ class TotalSalaryBank(models.Model):
         total_employees = len(bank_ids)
         for bank in bank_ids:
 
-            iban_sponsor = self.sponsor_name_id.iban_number or ''
-            sponsor_bank_number = self.sponsor_name_id.sponsor_bank_number
-            labor_office_number = self.sponsor_name_id.labor_office_number
+            record = self.sponsor_name_ids[:1]
+            iban_sponsor = record.iban_number or ''
+            sponsor_bank_number = record.sponsor_bank_number
+            labor_office_number = record.labor_office_number
             currency = bank.company_id.currency_id.name
             is_overtime = self.is_overtime
 

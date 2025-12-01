@@ -13,7 +13,7 @@
                             </group>
                             <group>
                                 <field name="date_to"/>
-                                <field name="sponsor_name_id" required="1"/>
+                                <field name="sponsor_name_ids" required="1" widget="many2many_tags"/>
                                 <field name="payment_method"/>
                             </group>
                             <group>
