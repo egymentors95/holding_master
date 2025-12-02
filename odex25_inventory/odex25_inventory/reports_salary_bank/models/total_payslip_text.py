@@ -77,10 +77,11 @@ class HrPayslipRunText(models.AbstractModel):
 
             if not is_overtime:
             # --- السطر الثاني ---
-                total_sum_field = self._fmt_amount_numeric(slip.net_salary, 15)
+                net_salary = slip.net_salary - slip.bonus - slip.overtime - slip.other_earnings
+                total_sum_field = self._fmt_amount_numeric(net_salary, 15)
                 basic_field = self._fmt_amount_numeric(getattr(slip, 'basic_salary', 0.0), 18)
                 house_field = self._fmt_amount_numeric(getattr(slip, 'housing_allowance', 0.0), 12)
-                collection_trans_other = slip.other_allowances + slip.transport_allowance + slip.food_allowance + slip.natural - slip.bonus - slip.overtime - slip.other_earnings
+                collection_trans_other = slip.other_allowances + slip.transport_allowance + slip.food_allowance + slip.natural
                 other_field = self._fmt_amount_numeric(collection_trans_other, 12)
                 deduction_value = abs(getattr(slip, 'other_deductions', 0.0)) + abs(getattr(slip, 'loan_installment', 0.0))
                 deduction_field = self._fmt_amount_numeric(deduction_value, 12)

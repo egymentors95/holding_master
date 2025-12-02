@@ -43,7 +43,11 @@ class TotalSalaryBank(models.Model):
             other_earnings = sum(b.other_earnings for b in bank_ids)
             total_net_salary = bonus + overtime + other_earnings
         else:
-            total_net_salary = sum(b.net_salary for b in bank_ids)
+            bonus = sum(b.bonus for b in bank_ids)
+            overtime = sum(b.overtime for b in bank_ids)
+            other_earnings = sum(b.other_earnings for b in bank_ids)
+            net_salary = sum(b.net_salary for b in bank_ids)
+            total_net_salary = net_salary - other_earnings - overtime - bonus
 
         total_employees = len(bank_ids)
 
@@ -117,7 +121,11 @@ class TotalSalaryBank(models.Model):
             other_earnings = sum(b.other_earnings for b in bank_ids)
             total_net_salary = bonus + overtime + other_earnings
         else:
-            total_net_salary = sum(b.net_salary for b in bank_ids)
+            bonus = sum(b.bonus for b in bank_ids)
+            overtime = sum(b.overtime for b in bank_ids)
+            other_earnings = sum(b.other_earnings for b in bank_ids)
+            net_salary = sum(b.net_salary for b in bank_ids)
+            total_net_salary = net_salary - other_earnings - overtime - bonus
 
         total_employees = len(bank_ids)
         for bank in bank_ids:
