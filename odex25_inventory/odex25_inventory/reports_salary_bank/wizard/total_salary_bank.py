@@ -31,13 +31,21 @@ class TotalSalaryBank(models.Model):
         if self.date_from and self.date_to and self.date_from > self.date_to:
             raise UserError("Date From must be before or equal to Date To.")
 
-        bank_ids = self.env['total.payslip'].sudo().search([
+        Payslip = self.env['total.payslip'].sudo()
+
+        domain = [
             ('date_from', '<=', self.date_to),
             ('date_to', '>=', self.date_from),
             ('payment_method', '=', 'bank'),
             ('sponsor_name_id', 'in', self.sponsor_name_ids.ids),
-        ])
+        ]
+
+        bank_ids = Payslip.search(domain)
+
         if self.is_overtime:
+            bank_ids = bank_ids.filtered(
+                lambda b: (b.bonus or 0) > 0 or (b.overtime or 0) > 0 or (b.other_earnings or 0) > 0
+            )
             bonus = sum(b.bonus for b in bank_ids)
             overtime = sum(b.overtime for b in bank_ids)
             other_earnings = sum(b.other_earnings for b in bank_ids)
@@ -102,20 +110,22 @@ class TotalSalaryBank(models.Model):
         if self.date_from and self.date_to and self.date_from > self.date_to:
             raise UserError("Date From must be before or equal to Date To.")
 
-        bank_ids = self.env['total.payslip'].sudo().search([
+        Payslip = self.env['total.payslip'].sudo()
+
+        domain = [
             ('date_from', '<=', self.date_to),
             ('date_to', '>=', self.date_from),
             ('payment_method', '=', 'itqan'),
             ('sponsor_name_id', 'in', self.sponsor_name_ids.ids),
+        ]
 
-        ])
-        print('bank_ids itqan', bank_ids)
+        bank_ids = Payslip.search(domain)
 
-        # -------------------------------
-        # Loop  slip.bonus + slip.overtime + slip.other_earnings
-        # -------------------------------
-        total_net_salary = 0
         if self.is_overtime:
+            bank_ids = bank_ids.filtered(
+                lambda b: (b.bonus or 0) > 0 or (b.overtime or 0) > 0 or (b.other_earnings or 0) > 0
+            )
+
             bonus = sum(b.bonus for b in bank_ids)
             overtime = sum(b.overtime for b in bank_ids)
             other_earnings = sum(b.other_earnings for b in bank_ids)
