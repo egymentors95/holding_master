@@ -58,7 +58,7 @@ class HrPayslipRunTextIqan(models.AbstractModel):
             if not is_overtime:
                 net_salary = slip.net_salary - slip.bonus - slip.overtime - slip.other_earnings
                 total_sum_field = self._fmt_amount_numeric(net_salary, 15)
-                basic_field = self._fmt_amount_numeric(getattr(slip, 'basic_salary', 0.0), 18)
+                basic_field = self._fmt_amount_numeric(getattr(slip, 'basic_salary', 0.0), 12)
                 house_field = self._fmt_amount_numeric(getattr(slip, 'housing_allowance', 0.0), 12)
                 collection_trans_other = slip.other_allowances + slip.transport_allowance + slip.food_allowance + slip.natural
                 other_field = self._fmt_amount_numeric(collection_trans_other, 12)
@@ -67,7 +67,7 @@ class HrPayslipRunTextIqan(models.AbstractModel):
             else:
                 new_net_salary = slip.bonus + slip.overtime + slip.other_earnings
                 total_sum_field = self._fmt_amount_numeric(new_net_salary, 15)
-                basic_field = self._fmt_amount_numeric(new_net_salary,  18)
+                basic_field = self._fmt_amount_numeric(new_net_salary,  12)
                 house_field = self._fmt_amount_numeric( 0.0, 12)
                 other_field = self._fmt_amount_numeric(0, 12)
                 deduction_field = self._fmt_amount_numeric(0, 12)
