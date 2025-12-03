@@ -45,7 +45,7 @@ class HrPayslipRunTextIqan(models.AbstractModel):
         is_overtime = rec.get('is_overtime')
         for slip in payslips:
             # --- السطر الأول ---
-            emp_no_field = self._fmt_integer_right(slip.id_number, 12)
+            emp_no_field = self._fmt_integer_right(slip.comp_emp_code, 12)
             acc_number_digit = (slip.account_number or '').strip()
             acc_number = self._fmt_integer_right(acc_number_digit, 24)
             spaces11 = ' ' * 10
