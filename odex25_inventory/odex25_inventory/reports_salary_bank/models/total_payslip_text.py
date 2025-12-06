@@ -67,7 +67,7 @@ class HrPayslipRunText(models.AbstractModel):
 
         for slip in payslips:
             # --- السطر الأول ---
-            emp_no_field = self._fmt_integer_right(slip.id_number, 12)
+            emp_no_field = self._fmt_integer_right(slip.comp_emp_code, 12)
             bic = (slip.bic or '').strip()
             spaces8 = ' ' * 8
             acc_number = (slip.account_number or '').strip()
