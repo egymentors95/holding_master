@@ -12,3 +12,12 @@ class ResUsers(models.Model):
         column1='user_id',
         column2='journal_id',
     )
+
+    allowed_category_ids = fields.Many2many(
+        'product.category',
+        string='Allowed Categories',
+        help='Categories this user is allowed to access',
+        relation='product_category_allowed_user_rel',
+        column1='user_id',
+        column2='category_id',
+    )

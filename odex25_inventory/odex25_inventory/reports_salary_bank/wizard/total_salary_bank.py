@@ -141,7 +141,7 @@ class TotalSalaryBank(models.Model):
         for bank in bank_ids:
 
             record = self.sponsor_name_ids[:1]
-            iban_sponsor = record.iban_number or ''
+            iban_sponsor = record.iban_itqan or ''
             sponsor_bank_number = record.sponsor_bank_number
             labor_office_number = record.labor_office_number
             currency = bank.company_id.currency_id.name

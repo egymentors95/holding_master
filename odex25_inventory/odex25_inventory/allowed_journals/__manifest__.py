@@ -13,5 +13,9 @@
     "data": [
         "views/account_journal_views.xml",
         "views/res_users_views.xml",
+        "views/product_category_views.xml",
     ],
+    "installable": True,
+    "application": False,
+    "auto_install": False,
 }

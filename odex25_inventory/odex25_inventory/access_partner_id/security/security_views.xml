@@ -40,5 +40,12 @@
         <field name="groups" eval="[(4, ref('access_partner_id.group_contacts_admin_global'))]"/>
     </record>
 
+<!--    <record id="menu_item_contacts" model="res.groups">-->
+<!--        <field name="name">Menuitem Contacts</field>-->
+<!--    </record>-->
+<!--    <record id="menu_item_products" model="res.groups">-->
+<!--        <field name="name">Menuitem Products</field>-->
+<!--    </record>-->
+
 
 </odoo>
