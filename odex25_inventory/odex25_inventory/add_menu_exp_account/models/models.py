@@ -187,7 +187,7 @@ class ExpenseLine(models.Model):
     employee_id = fields.Many2one(comodel_name='hr.employee')
     partner_id = fields.Many2one(comodel_name='res.partner', string='Partner', compute='_get_partner_id', store=True)
     product_ids = fields.Many2one(comodel_name="product.product", string="Product",
-                                  domain=[('categ_name', '=', 'Expenses')])
+                                  domain=[('is_expense', '=', True)])
     name = fields.Char(string="Label", )
     account_id = fields.Many2one(comodel_name="account.account", string="Account", required=False,
                                  readonly=False, )
