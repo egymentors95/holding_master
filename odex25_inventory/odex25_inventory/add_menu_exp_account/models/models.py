@@ -22,7 +22,7 @@ class Expense(models.Model):
     journal_entry_id = fields.Many2one(comodel_name="account.move", string="Journal Entry", copy=False)
     expense_date = fields.Date(string="Expense Date", required=True, copy=False, tracking=True,
                                default=lambda self: date.today())
-    journal_id = fields.Many2one(comodel_name="account.journal", string="Journal", required=True, tracking=True,
+    journal_id = fields.Many2one(comodel_name="account.journal", string="Journal", required=False, tracking=True,
                                  domain="[('type', 'in', ['bank','cash'])]")
     expenses_ids = fields.One2many(comodel_name="expense.line", inverse_name="invoice_id", string="Expenses",
                                    tracking=True)
@@ -85,10 +85,14 @@ class Expense(models.Model):
 
     def get_confirm(self):
         for rec in self:
+            if not rec.journal_id:
+                raise UserError(
+                    _("You cannot Post Entry. Please fill Journal."))
+
             for line in rec.expenses_ids:
                 if not line.account_id:
                     raise UserError(
-                        _("You cannot submit to account because some expense lines have no Account. Please fill all Accounts."))
+                        _("You cannot Post Entry because some expense lines have no Account. Please fill all Accounts."))
 
             lines = []
             taxx = 0
