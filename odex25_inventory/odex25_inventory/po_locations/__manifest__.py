@@ -1,0 +1,21 @@
+{
+    "name": "PO Locations",
+    "version": "14.0.0.1.0",
+    "category": "Purchase",
+    "summary": "PO Locations",
+    "author": "IBS",
+    "website": "https://www.ibs-na.com",
+    "license": "AGPL-3",
+    "depends": ['base','stock','account', 'product', 'purchase', 'partner_category', 'stock_landed_costs'],
+    "data": [
+        "security/ir.model.access.csv",
+        "views/stock_locations_views.xml",
+        "views/stock_picking_views.xml",
+        "views/purchase_order_views.xml",
+        "views/stock_landed_cost_views.xml",
+        "report/report_delivery_document_views.xml",
+    ],
+    "installable": True,
+    "application": False,
+    "auto_install": False,
+}

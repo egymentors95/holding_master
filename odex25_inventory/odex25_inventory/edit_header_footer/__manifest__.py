@@ -11,8 +11,12 @@
         You can modify the company details, add logos, and change the layout of the header and footer sections in reports.
     """,
     'data': [
+        'views/account_move_view.xml',
         'views/res_company_views.xml',
         'views/report_templates.xml',
+        'views/invoice_report_views.xml',
+        'views/inherit_report_invoice.xml',
+
     ],
     'installable': True,
     'application': False,

@@ -10,10 +10,12 @@
     "data": [
         "security/ir.model.access.csv",
         "wizard/inventory_wizard_views.xml",
+        "wizard/inventory_card_views.xml",
         "views/stock_views.xml",
         "views/product_template_views.xml",
 
         "reports/inventory_report_template_views.xml",
+        "reports/inventory_card_pdf.xml",
         "reports/action_reports.xml",
     ],
     "installable": True,

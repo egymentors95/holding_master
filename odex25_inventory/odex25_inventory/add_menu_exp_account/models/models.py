@@ -40,6 +40,18 @@ class Expense(models.Model):
     seq = fields.Char(readonly=True, copy=False, )
     company_id = fields.Many2one(comodel_name='res.company', string='Company', default=lambda self: self.env.company)
     user_id = fields.Many2one(comodel_name='res.users', string='User', default=lambda self: self.env.user, copy=False)
+    employee_ids = fields.Many2many(
+        comodel_name='hr.employee',
+        string='Employees',
+        compute='_compute_employee_ids',
+        store=True,
+        tracking=True
+    )
+
+    @api.depends('expenses_ids.employee_id')
+    def _compute_employee_ids(self):
+        for rec in self:
+            rec.employee_ids = rec.expenses_ids.mapped('employee_id')
 
     def unlink(self):
         error_message = _('You cannot delete a expense which is in %s state')
@@ -188,7 +200,15 @@ class ExpenseLine(models.Model):
 
     invoice_id = fields.Many2one(comodel_name="expense.expense", )
     company_id = fields.Many2one(related='invoice_id.company_id', store=True)
-    employee_id = fields.Many2one(comodel_name='hr.employee')
+    employee_id = fields.Many2one(
+        comodel_name='hr.employee',
+        domain="[('user_id', '=', uid)]",
+        default=lambda self: self.env['hr.employee'].search(
+            [('user_id', '=', self.env.uid)], limit=1
+        )
+    )
+    vendor_id = fields.Many2one(comodel_name='res.partner', string='Vendors', domain=[('supplier_rank', '>', 0)])
+    vat = fields.Char(related='vendor_id.vat', string='VAT', store=True)
     partner_id = fields.Many2one(comodel_name='res.partner', string='Partner', compute='_get_partner_id', store=True)
     product_ids = fields.Many2one(comodel_name="product.product", string="Product",
                                   domain=[('is_expense', '=', True)])

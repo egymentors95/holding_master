@@ -28,6 +28,7 @@
         'views/views.xml',
         'views/seq.xml',
         'views/product_product_views.xml',
+        'views/expense_line_views.xml',
         # 'views/print_expenses.xml',
     ],
 
