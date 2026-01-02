@@ -46,7 +46,7 @@
                                             <span t-esc="l['move_type']"/>
                                         </td>
                                         <td>
-                                            <span t-esc="l['name']"/>
+                                            <span t-esc="l.get('name', '')"/>
                                         </td>
                                         <td style="text-align:right;">
                                             <span t-esc="l['debit']"/>

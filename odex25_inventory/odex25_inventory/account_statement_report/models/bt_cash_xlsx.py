@@ -80,7 +80,7 @@ class BtCashXlsxReport(models.AbstractModel):
         for line in lines:
             worksheet.write(row, col, str(line['date']), cell)
             worksheet.write(row, col + 1, line['move_type'], cell)
-            worksheet.write_number(row, col + 2, line['name'], cell_number)
+            worksheet.write(row, col + 2, line.get('name', ''), cell)
             worksheet.write_number(row, col + 3, line['debit'], cell_number)
             worksheet.write_number(row, col + 4, line['credit'], cell_number)
             worksheet.write_number(row, col + 5, line['balance'], cell_number)
