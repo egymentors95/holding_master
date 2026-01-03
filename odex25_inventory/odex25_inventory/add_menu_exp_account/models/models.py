@@ -119,7 +119,7 @@ class Expense(models.Model):
                         taxx = tax.account_id.id
                 lines.append([0, 0, {
                     'account_id': line.account_id.id,
-                    'name': f"{line.product_ids} - {line.name}",
+                    'name': f"{line.product_ids.name} - {line.name}",
                     'debit': line.price_subtotal,
                     'analytic_account_id': analytic_var,
                     'partner_id': partner,
@@ -136,7 +136,7 @@ class Expense(models.Model):
                 }])
             lines.append([0, 0, {
                 'account_id': rec.journal_id.default_account_id.id,
-                'name': f"{line.product_ids} - {line.name}",
+                'name': f"{line.product_ids.name} - {line.name}",
                 'credit': rec.total,
                 'analytic_account_id': analytic_var,
                 'partner_id': partner,
