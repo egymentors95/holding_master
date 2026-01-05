@@ -19,6 +19,14 @@ class StockPicking(models.Model):
         string='Journal Entries',
         compute='_compute_journal_entry_count'
     )
+    state = fields.Selection(
+        selection_add=[('stock_keeper', 'Stock Keeper')],
+    )
+
+
+    def button_stock_keeper(self):
+        for rec in self:
+            rec.state = 'stock_keeper'
 
     @api.model
     def default_get(self, fields_list):
