@@ -11,6 +11,7 @@ class BtCashXlsxReport(models.AbstractModel):
         wizard = records[0]
         report_data = wizard.get_report_data()
         lines = report_data['lines']
+        print('linessss', lines)
 
         worksheet = workbook.add_worksheet('BT Cash Statement')
 
