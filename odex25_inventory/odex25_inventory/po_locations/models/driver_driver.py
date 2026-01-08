@@ -10,6 +10,7 @@ class DriverDriver(models.Model):
     name = fields.Char(default=_('New'), readonly=True, copy=False)
     state = fields.Selection([
         ('draft', 'Draft'),
+        ('waiting', 'Waiting'),
         ('delivered', 'Delivered'),
         ('refused', 'Refused'),
     ],default='draft', tracking=True, string='Status')
@@ -31,9 +32,11 @@ class DriverDriver(models.Model):
         for rec in self:
             rec.state = 'refused'
             rec.stock_id.state2 = 'draft'
+            rec.stock_id.driver_id = False
 
     def button_accept(self):
         for rec in self:
+            rec.state = 'waiting'
             rec.stock_id.state2 = 'out_for_delivery'
             rec.sale_id.state2 = 'out_for_delivery'
 
