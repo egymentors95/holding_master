@@ -17,6 +17,7 @@
         "account",
         "odex25_account_asset",
         "mrp",
+        "access_partner_id",
         "ksa_zatca_integration",
     ],
     "data": [
