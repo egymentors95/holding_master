@@ -12,17 +12,17 @@
                                 type="object"
                                 string="Refuse"
                                 class="oe_highlight"
-                                attrs="{'invisible': [('state2', '!=', 'draft')]}"/>
+                                attrs="{'invisible': [('state', '!=', 'draft')]}"/>
                         <button name="button_accept"
                                 type="object"
                                 string="Accept"
                                 class="oe_highlight"
-                                attrs="{'invisible': [('state2', '!=', 'draft')]}"/>
+                                attrs="{'invisible': [('state', '!=', 'draft')]}"/>
                         <button name="button_confirm"
                                 type="object"
                                 string="Accept"
                                 class="oe_highlight"
-                                attrs="{'invisible': [('state2', '!=', 'waiting')]}"/>
+                                attrs="{'invisible': [('state', '!=', 'waiting')]}"/>
 
 
                         <field name="state" widget="statusbar"/>
