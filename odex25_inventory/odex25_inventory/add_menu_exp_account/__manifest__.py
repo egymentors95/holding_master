@@ -20,10 +20,11 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'account', 'mail', 'purchase','web', 'product', 'stock'],
+    'depends': ['base', 'account', 'mail', 'purchase', 'web', 'product', 'stock'],
 
     # always loaded
     'data': [
+        'security/security.xml',
         'security/ir.model.access.csv',
         'views/views.xml',
         'views/seq.xml',
