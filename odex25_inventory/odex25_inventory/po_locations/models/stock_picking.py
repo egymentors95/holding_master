@@ -20,7 +20,7 @@ class StockPicking(models.Model):
         selection_add=[('stock_keeper', 'Stock Keeper')],
     )
     driver_id = fields.Many2one(comodel_name='res.users', string='Driver')
-    driver_model_id = fields.Many2one(comodel_name='driver.driver', string='Driver Model')
+    # driver_model_id = fields.Many2one(comodel_name='driver.driver', string='Driver Model')
     sale_id = fields.Many2one(comodel_name='sale.order', string='Sale Order')
     state2 = fields.Selection([
         ('draft', 'Draft'),
