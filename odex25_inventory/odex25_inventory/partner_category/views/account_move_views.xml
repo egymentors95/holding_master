@@ -13,6 +13,7 @@
 <!--            </xpath>-->
                <xpath expr="//group[1]/group[2]" position="inside">
                 <field name="description_note"/>
+                <field name="description_a"/>
             </xpath>
 
         </field>

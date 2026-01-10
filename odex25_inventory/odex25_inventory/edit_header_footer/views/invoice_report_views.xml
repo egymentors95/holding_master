@@ -54,11 +54,16 @@
                                             <span t-field="o.partner_id.name"/>
                                         </div>
                                         <br/>
-                                        <div style="text-align: right;">
-                                            <span>الرقم الضريبي:</span>
-                                            <span t-field="o.partner_id.vat"/>
-                                            <span style="margin-right: 100px;">P.O.NO.</span>
-                                            <span></span>
+                                        <div class="row">
+                                            <div class="col-6" style="text-align: right;">
+                                                <span>الرقم الضريبي:</span>
+                                                <span t-field="o.partner_id.vat"/>
+                                            </div>
+                                            <div class="col-6" style="text-align: left;">
+                                                <span t-field="o.description_note"/>
+                                                <span style="margin-right: 150px;">P.O.NO.</span>
+                                            </div>
+
                                         </div>
                                         <br/>
                                         <div style="text-align: right;">
@@ -70,7 +75,7 @@
                                         <br/>
                                         <div style="text-align: right;">
                                             <span>ملاحظات:</span>
-                                            <span t-field="o.description_note"/>
+                                            <span t-field="o.description_a"/>
                                         </div>
 
                                     </td>
@@ -166,7 +171,7 @@
                                             <span t-esc="line.product_uom_id.name"/>
                                         </td>
                                         <td style="border: 1px solid white; text-align: center;">
-                                            <span t-esc="'%.2f' % line.quantity"/>
+                                            <span t-esc="int(round(line.quantity))"/>
                                         </td>
 
                                         <td style="border: 1px solid white; text-align: center;">
@@ -202,7 +207,7 @@
                                         <tr>
                                             <td>
                                                 <span class="text-left">Untaxed Amount</span>
-                                                <br/>
+                                                /
                                                 <span class="text-left">الاجمالي بدون ضريبة</span>
                                             </td>
                                             <td class="text-right">
@@ -212,7 +217,7 @@
                                         <tr>
                                             <td>
                                                 <span class="text-left">Discount</span>
-                                                <br/>
+                                                /
                                                 <span class="text-left">الخصم</span>
                                             </td>
                                             <td class="text-right">
@@ -246,7 +251,7 @@
                                         <tr>
                                             <td class="text-left" style="background-color:#195C19; color: white;">
                                                 <span>Total with VAT</span>
-                                                <br/>
+                                                /
                                                 <span>الاجمالي بضريبة القيمة المضافة</span>
                                             </td>
                                             <td class="text-right" style="background-color:#195C19; color: white;">
