@@ -279,7 +279,6 @@
                             <br/>
                             <span>التوقيع</span>
 
-
                         </div>
                         <div>
                             <t t-if="o.authorized_signature">
