@@ -4,7 +4,7 @@
     <template id="header">
         <t t-set="company" t-value="docs.company_id"/>
         <div t-attf-class="header o_company_#{company.id}_layout" t-att-style="report_header_style">
-            <div class="row" style="font-size: 14px;">
+            <div class="row" style="font-size: 14px; font-family: Arial, sans-serif;">
                 <div class="col-5 header-left" style="text-align: left;">
                     <div style="font-weight: bold; ">
                         <span>Zaghwan Co for Trading and Industry</span>
@@ -35,7 +35,9 @@
                     <div>
                         <!--                        <img t-if="company.logo" t-att-src="image_data_uri(company.logo)"-->
                         <!--                             style="width:'20%';"/>-->
-                        <img src='/edit_header_footer/static/img/logo.png' width="100px"/>
+                        <br/>
+                        <br/>
+                        <img src='/edit_header_footer/static/img/logo1.png' width="150px"/>
 
                     </div>
                 </div>
@@ -109,76 +111,53 @@
                 <t t-set="o_sec" t-value="o.with_context(lang='ar_001')"/>
                 <t t-set="o" t-value="o.with_context(lang='en_US')"/>
 
-                <div class="page">
-                    <br/>
-                    <h3>
-                        <div class="row">
-                            <div class="col-4" style="text-align:left">
-                                <span t-if="o.move_type == 'out_invoice' and o.state == 'posted'">
-                                    Tax Invoice
-                                </span>
-                                <span t-if="o.move_type == 'out_invoice' and o.state == 'draft'">
-                                    Draft Invoice
-                                </span>
-                                <span t-if="o.move_type == 'out_invoice' and o.state == 'cancel'">
-                                    Cancelled Invoice
-                                </span>
-                                <span t-if="o.move_type == 'out_refund'">
-                                    Credit Note
-                                </span>
-                                <span t-if="o.move_type == 'in_refund'">
-                                    Vendor Credit Note
-                                </span>
-                                <span t-if="o.move_type == 'in_invoice'">
-                                    Vendor Bill
-                                </span>
-                            </div>
-                            <div class="col-4">
-                                <!--                                <span>فاتورة ضريبية</span>-->
-                            </div>
-                            <div class="col-4" style="text-align:right">
-                                <span t-if="o.move_type == 'out_invoice' and o.state == 'posted'">
-                                    فاتورة ضريبية
-                                </span>
-                                <span t-if="o.move_type == 'out_invoice' and o.state == 'draft'">
-                                    مسودة فاتورة
-                                </span>
-                                <span t-if="o.move_type == 'out_invoice' and o.state == 'cancel'">
-                                    فاتورة ملغاة
-                                </span>
-                                <span t-if="o.move_type == 'out_refund'">
-                                    إشعار خصم
-                                </span>
-                                <span t-if="o.move_type == 'in_refund'">
-                                    إشعار خصم المورد
-                                </span>
-                                <span t-if="o.move_type == 'in_invoice'">
-                                    فاتورة المورد
-                                </span>
-                            </div>
+                <div class="page" style="font-family: Arial, sans-serif;">
+                    <div class="row"
+                         style="width:100%; border: 1px solid black; font-size: 14px; padding:4px;; margin:0; height: 40px; vertical-align: middle; font-weight: bold;"
+                         dir="ltr">
+                        <div class="col-6"  style="vertical-align: middle;">
+                            <span t-if="o.move_type == 'out_invoice' and o.state == 'posted'">
+                                Tax Invoice
+                            </span>
+                            <span t-if="o.move_type == 'out_invoice' and o.state == 'draft'">
+                                Draft Invoice
+                            </span>
+                            <span t-if="o.move_type == 'out_invoice' and o.state == 'cancel'">
+                                Cancelled Invoice
+                            </span>
+                            <span t-if="o.move_type == 'out_refund'">
+                                Credit Note
+                            </span>
+                            <span t-if="o.move_type == 'in_refund'">
+                                Vendor Credit Note
+                            </span>
+                            <span t-if="o.move_type == 'in_invoice'">
+                                Vendor Bill
+                            </span>
+
                         </div>
-                    </h3>
-                    <table class="table table-sm table-bordered"
-                           style="width:100%; border: 2px solid black; font-size: 13px; table-layout:fixed; border-collapse:collapse; padding:0; margin:0;"
-                           dir="ltr">
-                        <tbody>
-                            <tr>
-                                <td height="50px;" style="text-align: center; vertical-align: middle;">
-                                    <div style="
-                                                border: 1px solid black;
-                                                border-radius: 10px;
-                                                font-size: 16px;
-                                                text-align: center;
-                                                width: 70%;
-                                                margin: 0 auto;
-                                                height: 40px;
-                                            ">
-                                        <span t-field="o.name"/>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                        <div class="col-6" style="text-align: right; vertical-align: middle;">
+                            <span t-if="o.move_type == 'out_invoice' and o.state == 'posted'">
+                                فاتورة ضريبية
+                            </span>
+                            <span t-if="o.move_type == 'out_invoice' and o.state == 'draft'">
+                                مسودة فاتورة
+                            </span>
+                            <span t-if="o.move_type == 'out_invoice' and o.state == 'cancel'">
+                                فاتورة ملغاة
+                            </span>
+                            <span t-if="o.move_type == 'out_refund'">
+                                إشعار خصم
+                            </span>
+                            <span t-if="o.move_type == 'in_refund'">
+                                إشعار خصم المورد
+                            </span>
+                            <span t-if="o.move_type == 'in_invoice'">
+                                فاتورة المورد
+                            </span>
+
+                        </div>
+                    </div>
                     <table class="table table-sm table-bordered"
                            style="width:100%; border: 2px solid black; font-size: 13px; table-layout:fixed; border-collapse:collapse; padding:0; margin:0;"
                            dir="ltr">
@@ -290,12 +269,12 @@
                                     </span>
                                     <br/>
                                     <span>
-                                        Quantity
+                                        Qty
                                     </span>
                                 </th>
                                 <th name="th_quantity">
                                     <span>
-                                        Lot
+                                        Batch
                                     </span>
                                 </th>
                                 <th name="th_priceunit"
@@ -375,11 +354,12 @@
 
                                                 <t t-if="line.name != english_name and line.name != arabic_name">
                                                     <br/>
-                                                    <span t-field="line.name" t-options="{'widget': 'text'}"/>
+                                                    <span t-field="line.product_id.name"
+                                                          t-options="{'widget': 'text'}"/>
                                                 </t>
                                             </t>
                                             <t t-else="">
-                                                <span t-field="line.name" t-options="{'widget': 'text'}"/>
+                                                <span t-field="line.product_id.name" t-options="{'widget': 'text'}"/>
                                             </t>
                                         </td>
                                         <td>
@@ -388,18 +368,17 @@
                                         <td>
                                             <span t-esc="'%.2f' % line.quantity"/>
                                         </td>
-                                        <td>
-                                            <span t-esc="'%.2f' % line.price_unit"/>
-
-                                        </td>
                                         <td class="o_price_total">
                                             <span t-esc="line.lot_id.name"/>
-
                                         </td>
+                                        <td>
+                                            <span t-esc="'%.2f' % line.price_unit"/>
+                                        </td>
+
                                         <td class="o_price_total">
                                             <span t-esc="'%.2f' % line.price_subtotal"/>
-
                                         </td>
+
 
                                         <td>
                                             <span t-esc="'%.2f' % line.l10n_gcc_invoice_tax_amount"/>
