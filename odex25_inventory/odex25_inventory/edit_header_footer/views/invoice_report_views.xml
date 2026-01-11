@@ -60,8 +60,8 @@
                                                 <span t-field="o.partner_id.vat"/>
                                             </div>
                                             <div class="col-6" style="text-align: left;">
-                                                <span t-field="o.description_note"/>
                                                 <span style="margin-right: 150px;">P.O.NO.</span>
+                                                <span t-field="o.description_note"/>
                                             </div>
 
                                         </div>
@@ -105,8 +105,6 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <br/>
-
                         <table class="table table-borderless"
                                style="border-radius: 8px; font-size: 12px;">
                             <thead>
@@ -199,8 +197,15 @@
 
                         </table>
 
-                        <div class="row">
-                            <div class="col-6"/>
+                        <div class="row" style="font-size: 13px;">
+                            <div class="col-6" style="text-align:right; vertical-align: middle;">
+
+                                <img t-if="o.l10n_sa_qr_code_str"
+                                     style="display:block;margin:10% auto 0 auto;"
+                                     t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s'%('QR', o.l10n_sa_qr_code_str, 150, 150)"/>
+
+
+                            </div>
                             <div class="col-6">
                                 <table class="table table-border">
                                     <tbody>
@@ -267,23 +272,27 @@
                                 </div>
                             </div>
                         </div>
-                        <br/>
-                        <br/>
-                        <div class="row" style="page-break-inside: avoid;">
-                            <div class="col-6" style="text-align:right; vertical-align: middle;">
 
-                                <img t-if="o.l10n_sa_qr_code_str"
-                                     style="display:block;margin:10% auto 0 auto;"
-                                     t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s'%('QR', o.l10n_sa_qr_code_str, 150, 150)"/>
+                        <div style="font-size: 14px; font-weight: bold; text-align: right">
+                            <br/>
+                            <span>اسم المستلم</span>
+                            <br/>
+                            <span>التوقيع</span>
 
-                            </div>
 
-                            <div class="col-6" style="font-size: 14px; font-weight: bold; text-align: right">
-                                <br/>
-                                <br/>
-                                <span>اسم المستلم</span>
-
-                            </div>
+                        </div>
+                        <div>
+                            <t t-if="o.authorized_signature">
+                                <img t-att-src="'data:image/png;base64,%s' % o.authorized_signature"
+                                     style="height:150px; width:80px;"/>
+                            </t>
+                            <t t-elif="o.partner_id and o.partner_id.signature">
+                                <img t-att-src="'data:image/png;base64,%s' % o.partner_id.signature"
+                                     style="height:150px; width:80px;"/>
+                            </t>
+                            <t t-else="">
+                                <span style="color:gray;">No signature available</span>
+                            </t>
                         </div>
 
 
