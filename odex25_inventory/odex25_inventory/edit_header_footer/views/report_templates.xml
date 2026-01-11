@@ -196,13 +196,13 @@
                                         <span>العنوان:</span>
                                         <span t-field="o.partner_id.street"/>
                                         <span t-field="o.partner_id.street2"/>
-                                        <strong>رقم المبنى</strong>
+                                        <span t-if="o.partner_id.building_no">رقم المبنى</span>
                                         <span t-field="o.partner_id.building_no"/>
-                                        <strong>حي</strong>
+                                        <span t-if="o.partner_id.district">حي</span>
                                         <span t-field="o.partner_id.district"/>
-                                        <strong>مدينة</strong>
+                                        <span t-if="o.partner_id.city">مدينة</span>
                                         <span t-field="o.partner_id.city"/>
-                                        <strong>رمز بريدي</strong>
+                                        <span t-if="o.partner_id.zip">رمز بريدي</span>
                                         <span t-field="o.partner_id.zip"/>
                                         <span t-field="o.partner_id.country_id"/>
                                     </div>
