@@ -31,13 +31,11 @@
                 </div>
 
                 <!-- Logo Center -->
-                <div class="col-2 header-logo" style="text-align: center;">
+                <div class="col-2 header-logo" style="text-align: center; vertical-align: middle;">
                     <div>
-                        <!--                        <img t-if="company.logo" t-att-src="image_data_uri(company.logo)"-->
-                        <!--                             style="width:'20%';"/>-->
                         <br/>
                         <br/>
-                        <img src='/edit_header_footer/static/img/logo1.png' width="150px"/>
+                        <img src='/edit_header_footer/static/img/logo1.png' width="170px"/>
 
                     </div>
                 </div>
@@ -115,7 +113,7 @@
                     <div class="row"
                          style="width:100%; border: 1px solid black; font-size: 14px; padding:4px;; margin:0; height: 40px; vertical-align: middle; font-weight: bold;"
                          dir="ltr">
-                        <div class="col-6"  style="vertical-align: middle;">
+                        <div class="col-6" style="vertical-align: middle;">
                             <span t-if="o.move_type == 'out_invoice' and o.state == 'posted'">
                                 Tax Invoice
                             </span>
@@ -180,11 +178,18 @@
                                         <span t-field="o.partner_id.name"/>
                                     </div>
                                     <br/>
-                                    <div style="text-align: right;">
-                                        <span>الرقم الضريبي:</span>
-                                        <span t-field="o.partner_id.vat"/>
-                                        <span style="margin-right: 100px;">P.O.NO.</span>
-                                        <span t-field="o.description_note"/>
+                                    <div style="text-align: right;" class="row">
+                                        <div class="col-6">
+                                            <span>الرقم الضريبي:</span>
+                                            <span t-field="o.partner_id.vat"/>
+                                        </div>
+                                        <div class="col-1"/>
+                                        <div class="col-3" style="text-align: left;">
+                                            <span t-field="o.description_note"/>
+                                        </div>
+                                        <div class="col-2">
+                                            <span>:P.O.NO</span>
+                                        </div>
                                     </div>
                                     <br/>
                                     <div style="text-align: right;">
@@ -336,37 +341,13 @@
                                             <span t-esc="line.product_id.default_code or ''"/>
                                         </td>
                                         <td name="account_invoice_line_name">
-                                            <t t-if="line.product_id">
-                                                <t t-set="arabic_name"
-                                                   t-value="line.with_context(lang='ar_001').product_id.display_name"/>
-                                                <t t-set="english_name"
-                                                   t-value="line.with_context(lang='en_US').product_id.display_name"/>
-
-                                                <span t-field="line.product_id.display_name"
-                                                      t-options="{'widget': 'text'}"/>
-
-                                                <t t-if="arabic_name != english_name">
-                                                    <br/>
-                                                    <span t-field="line.with_context(lang='ar_001').product_id.name"
-                                                          style="text:right"
-                                                          t-options="{'widget': 'text'}"/>
-                                                </t>
-
-                                                <t t-if="line.name != english_name and line.name != arabic_name">
-                                                    <br/>
-                                                    <span t-field="line.product_id.name"
-                                                          t-options="{'widget': 'text'}"/>
-                                                </t>
-                                            </t>
-                                            <t t-else="">
-                                                <span t-field="line.product_id.name" t-options="{'widget': 'text'}"/>
-                                            </t>
+                                            <span t-esc="line.product_id.name"/>
                                         </td>
                                         <td>
                                             <span t-field="line.product_uom_id"/>
                                         </td>
                                         <td>
-                                            <span t-esc="'%.2f' % line.quantity"/>
+                                            <span t-esc="int(line.quantity)"/>
                                         </td>
                                         <td class="o_price_total">
                                             <span t-esc="line.lot_id.name"/>
@@ -512,72 +493,16 @@
                                     </t>
                                 </table>
                             </div>
+                            <div class="col-4" style="text-align: right; vertical-align: middle;">
+                                <img t-if="o.l10n_sa_qr_code_str"
+                                     style="display:block;margin:10% auto 0 auto;"
+                                     t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s'%('QR', o.l10n_sa_qr_code_str, 150, 150)"/>
+                            </div>
                         </div>
                     </div>
-                    <!--                    <div style="border: 1px solid black; padding: 10px; margin-top: 10px;">-->
-                    <!--                        <span t-field="o.amount_total_in_words_ar"/>-->
-                    <!--                    </div>-->
 
 
-                    <p t-if="o.invoice_payment_term_id" name="payment_term">
-                        <div class="row">
-                            <div class="col-6 text-left">
-                                <span t-field="o.invoice_payment_term_id.note"/>
-                            </div>
-                            <div class="col-6 text-right">
-                                <span dir="rtl" t-field="o_sec.invoice_payment_term_id.note"/>
-                            </div>
-
-                        </div>
-                    </p>
-                    <p t-if="o.narration" name="comment">
-                        <div class="row">
-                            <div class="col-6 text-left">
-                                <span t-field="o.narration"/>
-                            </div>
-                            <div class="col-6 text-right">
-                                <span t-field="o_sec.narration"/>
-                            </div>
-                        </div>
-                    </p>
-                    <p t-if="o.fiscal_position_id.note" name="note">
-                        <div class="row">
-                            <div class="col-6 text-left">
-                                <span t-field="o.fiscal_position_id.note"/>
-                            </div>
-                            <div class="col-6 text-right">
-                                <span t-field="o_sec.fiscal_position_id.note"/>
-                            </div>
-                        </div>
-                    </p>
-                    <p t-if="o.invoice_incoterm_id" name="incoterm">
-                        <div class="row">
-                            <div class="col-6 text-left">
-                                <strong>Incoterm:
-                                </strong>
-                                <span
-                                        t-field="o.invoice_incoterm_id.code"/>
-                                -
-                                <span
-                                        t-field="o.invoice_incoterm_id.name"/>
-                            </div>
-                            <div class="col-6 text-right">
-                                <strong>شرط تجاري:
-                                </strong>
-                                <span
-                                        t-field="o_sec.invoice_incoterm_id.code"/>
-                                -
-                                <span
-                                        t-field="o_sec.invoice_incoterm_id.name"/>
-                            </div>
-                        </div>
-                    </p>
                     <div class="row">
-                        <div class="col-6">
-                            <img t-if="o.l10n_sa_qr_code_str"
-                                 style="display:block;margin:10% auto 0 auto;"
-                                 t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s'%('QR', o.l10n_sa_qr_code_str, 150, 150)"/>
-                        </div>
                         <div class="col-6">
                             <div style="font-size: 14px; font-weight: bold; text-align: right">
                                 <br/>
