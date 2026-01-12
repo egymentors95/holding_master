@@ -507,9 +507,8 @@
                                 </table>
                             </div>
                             <div class="col-4" style="text-align: right; vertical-align: middle;">
-                                <img t-if="o.l10n_sa_qr_code_str"
-                                     style="display:block;margin:10% auto 0 auto;"
-                                     t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s'%('QR', o.l10n_sa_qr_code_str, 150, 150)"/>
+                <img style="text-align:center;width:150px;max-height:150px;"
+                     alt="Barcode" t-att-src="o.get_qrcode()"/>
                             </div>
                         </div>
                     </div>
