@@ -8,59 +8,59 @@
         <field name="inherit_id" ref="stock.view_picking_form"/>
         <field name="arch" type="xml">
 
-<!--            <xpath expr="//header" position="inside">-->
-<!--                <button name="button_stock_keeper"-->
-<!--                        type="object"-->
-<!--                        string="Stock Keeper"-->
-<!--                        class="oe_highlight"-->
-<!--                        attrs="{'invisible': [('state', '!=', 'assigned')]}"/>-->
-<!--                <button name="button_validate"-->
-<!--                        string="Validate"-->
-<!--                        type="object"-->
-<!--                        class="oe_highlight"-->
-<!--                        attrs="{-->
-<!--                            'invisible': [-->
-<!--                                '|',-->
-<!--                                ('picking_type_code', '!=', 'outgoing'),-->
-<!--                                ('state', '!=', 'stock_keeper')-->
-<!--                            ]-->
-<!--                        }"/>-->
-<!--            </xpath>-->
+            <!--            <xpath expr="//header" position="inside">-->
+            <!--                <button name="button_stock_keeper"-->
+            <!--                        type="object"-->
+            <!--                        string="Stock Keeper"-->
+            <!--                        class="oe_highlight"-->
+            <!--                        attrs="{'invisible': [('state', '!=', 'assigned')]}"/>-->
+            <!--                <button name="button_validate"-->
+            <!--                        string="Validate"-->
+            <!--                        type="object"-->
+            <!--                        class="oe_highlight"-->
+            <!--                        attrs="{-->
+            <!--                            'invisible': [-->
+            <!--                                '|',-->
+            <!--                                ('picking_type_code', '!=', 'outgoing'),-->
+            <!--                                ('state', '!=', 'stock_keeper')-->
+            <!--                            ]-->
+            <!--                        }"/>-->
+            <!--            </xpath>-->
 
-<!--            <xpath expr="//header" position="after">-->
-<!--                <header>-->
-<!--                    <button name="button_send_to_driver"-->
-<!--                            type="object"-->
-<!--                            string="Send to Driver"-->
-<!--                            class="oe_highlight"-->
-<!--                            attrs="{'invisible': ['|', ('types_out', 'not in', ['driver', 'charge']), ('state2', '=', 'out_for_delivery')]}"/>-->
-<!--                    <field name="state2" widget="statusbar"/>-->
-<!--                </header>-->
-<!--            </xpath>-->
-<!--            <xpath expr="//header/button[@name='button_validate'][1]" position="attributes">-->
-<!--                <attribute name="attrs">{-->
-<!--                    'invisible': [-->
-<!--                    '|',-->
-<!--                    ('picking_type_code', '=', 'outgoing'),-->
-<!--                    '|',-->
-<!--                    ('state', 'in', ('waiting','confirmed')),-->
-<!--                    ('show_validate', '=', False)-->
-<!--                    ]-->
-<!--                    }-->
-<!--                </attribute>-->
-<!--            </xpath>-->
-<!--            <xpath expr="//header/button[@name='button_validate'][2]" position="attributes">-->
-<!--                <attribute name="attrs">{-->
-<!--                    'invisible': [-->
-<!--                    '|',-->
-<!--                    ('picking_type_code', '=', 'outgoing'),-->
-<!--                    '|',-->
-<!--                    ('state', 'not in', ('waiting', 'confirmed')),-->
-<!--                    ('show_validate', '=', False)-->
-<!--                    ]-->
-<!--                    }-->
-<!--                </attribute>-->
-<!--            </xpath>-->
+            <!--            <xpath expr="//header" position="after">-->
+            <!--                <header>-->
+            <!--                    <button name="button_send_to_driver"-->
+            <!--                            type="object"-->
+            <!--                            string="Send to Driver"-->
+            <!--                            class="oe_highlight"-->
+            <!--                            attrs="{'invisible': ['|', ('types_out', 'not in', ['driver', 'charge']), ('state2', '=', 'out_for_delivery')]}"/>-->
+            <!--                    <field name="state2" widget="statusbar"/>-->
+            <!--                </header>-->
+            <!--            </xpath>-->
+            <!--            <xpath expr="//header/button[@name='button_validate'][1]" position="attributes">-->
+            <!--                <attribute name="attrs">{-->
+            <!--                    'invisible': [-->
+            <!--                    '|',-->
+            <!--                    ('picking_type_code', '=', 'outgoing'),-->
+            <!--                    '|',-->
+            <!--                    ('state', 'in', ('waiting','confirmed')),-->
+            <!--                    ('show_validate', '=', False)-->
+            <!--                    ]-->
+            <!--                    }-->
+            <!--                </attribute>-->
+            <!--            </xpath>-->
+            <!--            <xpath expr="//header/button[@name='button_validate'][2]" position="attributes">-->
+            <!--                <attribute name="attrs">{-->
+            <!--                    'invisible': [-->
+            <!--                    '|',-->
+            <!--                    ('picking_type_code', '=', 'outgoing'),-->
+            <!--                    '|',-->
+            <!--                    ('state', 'not in', ('waiting', 'confirmed')),-->
+            <!--                    ('show_validate', '=', False)-->
+            <!--                    ]-->
+            <!--                    }-->
+            <!--                </attribute>-->
+            <!--            </xpath>-->
 
 
             <xpath expr="//div[@name='button_box']" position="inside">
@@ -75,12 +75,12 @@
             </xpath>
             <xpath expr="//group[1]/group[2]" position="inside">
                 <field name="purchase_order_id" readonly="1"/>
-<!--                <field name="types_out"-->
-<!--                       attrs="{'invisible': [('picking_type_code', 'not in', ['outgoing', 'internal'])]}"/>-->
-<!--                <field name="driver_id" attrs="{'invisible': [('types_out', 'not in', ['driver', 'charge'])]}"-->
-<!--                       domain="[('is_driver', '=', True)]" options="{'no_create': True}"/>-->
-<!--                <field name="attachment_ids" widget="many2many_binary"-->
-<!--                       attrs="{'invisible': [('picking_type_code', 'not in', ['outgoing', 'internal'])]}"/>-->
+                <!--                <field name="types_out"-->
+                <!--                       attrs="{'invisible': [('picking_type_code', 'not in', ['outgoing', 'internal'])]}"/>-->
+                <!--                <field name="driver_id" attrs="{'invisible': [('types_out', 'not in', ['driver', 'charge'])]}"-->
+                <!--                       domain="[('is_driver', '=', True)]" options="{'no_create': True}"/>-->
+                <!--                <field name="attachment_ids" widget="many2many_binary"-->
+                <!--                       attrs="{'invisible': [('picking_type_code', 'not in', ['outgoing', 'internal'])]}"/>-->
             </xpath>
             <!--            <xpath expr="//field[@name='location_id']" position="attributes">-->
             <!--                <attribute name="domain">[('usage', 'in', ['supplier', 'internal', 'customer', 'inventory',-->
@@ -96,6 +96,51 @@
 
         </field>
     </record>
+
+    <menuitem id="stock.menu_valuation" name="Inventory Report"
+              parent="stock.menu_stock_root" sequence="100"
+              action="stock.action_view_quants"/>
+
+    <record id="stock_picking_user_rule" model="ir.rule">
+        <field name="name">Stock Picking: User</field>
+        <field name="model_id" ref="stock.model_stock_picking"/>
+        <field name="domain_force">[('user_ids', 'in', user.id)]</field>
+        <field name="groups" eval="[(4, ref('stock.group_stock_user'))]"/>
+    </record>
+    <record id="stock_picking_manager_rule" model="ir.rule">
+        <field name="name">Stock Picking: Manager</field>
+        <field name="model_id" ref="stock.model_stock_picking"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('stock.group_stock_manager'))]"/>
+    </record>
+
+    <record id="stock_move_line_user_rule" model="ir.rule">
+        <field name="name">Stock Move Line: User</field>
+        <field name="model_id" ref="stock.model_stock_move_line"/>
+        <field name="domain_force">[('user_ids', 'in', user.id)]</field>
+        <field name="groups" eval="[(4, ref('stock.group_stock_user'))]"/>
+    </record>
+    <record id="stock_move_line_manager_rule" model="ir.rule">
+        <field name="name">Stock Move Line: Manager</field>
+        <field name="model_id" ref="stock.model_stock_move_line"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('stock.group_stock_manager'))]"/>
+    </record>
+
+    <record id="stock_move_user_rule" model="ir.rule">
+        <field name="name">Stock Move: User</field>
+        <field name="model_id" ref="stock.model_stock_move"/>
+        <field name="domain_force">[('user_ids', 'in', user.id)]</field>
+        <field name="groups" eval="[(4, ref('stock.group_stock_user'))]"/>
+    </record>
+    <record id="stock_move_manager_rule" model="ir.rule">
+        <field name="name">Stock Move: Manager</field>
+        <field name="model_id" ref="stock.model_stock_move"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('stock.group_stock_manager'))]"/>
+    </record>
+
+
 
 </odoo>
 
