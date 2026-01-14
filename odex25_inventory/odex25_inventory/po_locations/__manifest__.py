@@ -17,6 +17,7 @@
         "views/stock_landed_cost_views.xml",
         # "views/driver_driver_views.xml",
         # "views/sale_order_views.xml",
+        "report/stock_quant_report_views.xml",
         "report/report_delivery_document_views.xml",
     ],
     "installable": True,
