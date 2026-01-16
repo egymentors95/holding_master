@@ -9,4 +9,3 @@ class AccountMove(models.Model):
     description_note = fields.Char(string='Purchase Order')
     description_a = fields.Char(string='Description')
     active = fields.Boolean(string='Active', default=True)
-    is_not_zatca = fields.Boolean(string='Is Not ZATCA', default=False)
