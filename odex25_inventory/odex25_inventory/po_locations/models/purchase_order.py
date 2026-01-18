@@ -55,4 +55,32 @@ class PurchaseOrder(models.Model):
 
         return res
 
+    def button_confirm(self):
+        res = super(PurchaseOrder, self).button_confirm()
+
+        for order in self:
+            pickings = self.env['stock.picking'].search([
+                ('origin', '=', order.name)
+            ])
+
+            for picking in pickings:
+                for move in picking.move_ids_without_package:
+                    line = move.purchase_line_id
+                    if not line or not line.lot_name:
+                        continue
+
+                    self.env['stock.move.line'].create({
+                        'move_id': move.id,
+                        'product_id': move.product_id.id,
+                        'lot_name': line.lot_name,
+                        'qty_done': move.product_uom_qty,
+                        'product_uom_id': move.product_uom.id,
+                        'location_id': move.location_id.id,
+                        'location_dest_id': move.location_dest_id.id,
+                        'picking_id': picking.id,
+                    })
+
+        return res
+
+
 
