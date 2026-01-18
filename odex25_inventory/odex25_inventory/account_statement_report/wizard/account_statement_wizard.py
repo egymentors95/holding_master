@@ -28,6 +28,7 @@ class AccountStatementWizard(models.TransientModel):
             ('move_id.state', '=', 'posted'),
             ('account_id.internal_type', '=', 'receivable'),
             ('reconciled', '=', False),
+            ('move_id.invoice_user_id', '=', self.env.user.id),
         ]
         lines = self.env['account.move.line'].search(domain)
 
@@ -62,6 +63,8 @@ class AccountStatementWizard(models.TransientModel):
             ('move_id.state', '=', 'posted'),
             ('date', '<', self.date_from),
             ('account_id.internal_type', 'in', ('receivable', 'payable')),
+        ('move_id.invoice_user_id', '=', self.env.user.id),  # <-- الشرط الجديد
+
         ])
         initial_balance = sum(init_lines.mapped(lambda l: l.debit - l.credit))
 
@@ -72,6 +75,8 @@ class AccountStatementWizard(models.TransientModel):
             ('date', '>=', self.date_from),
             ('date', '<=', self.date_to),
             ('account_id.internal_type', 'in', ('receivable', 'payable')),
+        ('move_id.invoice_user_id', '=', self.env.user.id),  # <-- الشرط الجديد
+
         ], order='date, move_id, sequence, id')
 
         running_balance = initial_balance
