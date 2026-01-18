@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from odoo.exceptions import ValidationError
 
 
 class SaleOrderLine(models.Model):
@@ -29,15 +30,45 @@ class SaleOrderLine(models.Model):
 
         self.lot_id = quant.lot_id if quant else False
 
-    @api.constrains('product_id.lst_price', 'price_unit')
+    @api.constrains('product_id', 'price_unit', 'order_id')
     def _check_price_unit(self):
         for line in self:
-            if self.env.user.has_group('editable_sale.group_editable_sale_order'):
+            # لو اليوزر عنده صلاحية تعديل السعر → نتخطى الفحص
+            if line.env.user.has_group('editable_sale.group_editable_sale_order'):
                 continue
-            if line.price_unit < line.product_id.lst_price:
-                raise models.ValidationError(
-                    "The unit price cannot be lower than the product's list price."
+
+            if not line.product_id or not line.order_id:
+                continue
+
+            partner = line.order_id.partner_id
+            pricelist = partner.property_product_pricelist
+
+            if pricelist:
+                # استخدام get_product_price في Odoo 14
+                price_in_pricelist = pricelist.get_product_price(
+                    line.product_id,
+                    line.product_uom_qty or 1.0,
+                    partner
                 )
+
+                if price_in_pricelist > 0:
+                    if line.price_unit < price_in_pricelist:
+                        raise ValidationError(
+                            f"The unit price cannot be lower than the pricelist price "
+                            f"({price_in_pricelist}) for this customer."
+                        )
+                else:
+                    # المنتج مش موجود في Pricelist → نطبق lst_price
+                    if line.price_unit < line.product_id.lst_price:
+                        raise ValidationError(
+                            "The unit price cannot be lower than the product's list price."
+                        )
+            else:
+                # العميل مفيش له Pricelist → نطبق lst_price
+                if line.price_unit < line.product_id.lst_price:
+                    raise ValidationError(
+                        "The unit price cannot be lower than the product's list price."
+                    )
 
     def _prepare_invoice_line(self, **optional_values):
         res = super()._prepare_invoice_line(**optional_values)
