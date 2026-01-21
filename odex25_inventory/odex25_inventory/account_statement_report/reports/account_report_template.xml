@@ -85,15 +85,11 @@
 
 
                 <div class="page" style="direction: rtl; font-size: 14px;" dir="rtl">
-                    <div class="row">
+                    <div>
                         <div style="color: black; font-size: 18px;  text-align: right;">
                             <strong>العميل:</strong>
                             <t t-esc="report_data.get('partner_name','')"/>
                         </div>
-                        <!--                        <div style="color: black; font-size: 18px;  text-align: right;">-->
-                        <!--                            <strong>العميل:</strong>-->
-                        <!--                            <t t-esc="report_data.get('partner_name','')"/>-->
-                        <!--                        </div>-->
 
 
                     </div>
