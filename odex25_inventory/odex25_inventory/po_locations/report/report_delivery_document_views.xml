@@ -6,7 +6,7 @@
             <div class="row">
                 <div class="col-auto">
                     <div style="font-weight: bold;">Source</div>
-                    <div t-field="o.picking_type_id"/>
+                    <div t-field="o.location_id"/>
                 </div>
                 <div class="col-auto">
                     <div style="font-weight: bold;">Destination</div>
