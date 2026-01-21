@@ -90,10 +90,10 @@
                             <strong>العميل:</strong>
                             <t t-esc="report_data.get('partner_name','')"/>
                         </div>
-<!--                        <div style="color: black; font-size: 18px;  text-align: right;">-->
-<!--                            <strong>العميل:</strong>-->
-<!--                            <t t-esc="report_data.get('partner_name','')"/>-->
-<!--                        </div>-->
+                        <!--                        <div style="color: black; font-size: 18px;  text-align: right;">-->
+                        <!--                            <strong>العميل:</strong>-->
+                        <!--                            <t t-esc="report_data.get('partner_name','')"/>-->
+                        <!--                        </div>-->
 
 
                     </div>
@@ -130,13 +130,13 @@
                                     </td>
 
                                     <td class="text-right">
-                                        <t t-esc="l.get('debit',0.0)"/>
+                                        <t t-esc="'{:,.2f}'.format(l.get('debit',0.0))"/>
                                     </td>
                                     <td class="text-right">
-                                        <t t-esc="l.get('credit',0.0)"/>
+                                        <t t-esc="'{:,.2f}'.format(l.get('credit',0.0))"/>
                                     </td>
                                     <td class="text-right">
-                                        <t t-esc="l.get('balance',0.0)"/>
+                                        <t t-esc="'{:,.2f}'.format(l.get('balance',0.0))"/>
                                     </td>
                                 </tr>
                             </t>
@@ -150,15 +150,15 @@
                             </td>
                             <td>
                                 <strong>إجمالي المدين:</strong>
-                                <t t-esc="report_data.get('total_debit',0.0)"/>
+                                <t t-esc="'{:,.2f}'.format(report_data.get('total_debit',0.0))"/>
                             </td>
                             <td>
                                 <strong>إجمالي الدائن:</strong>
-                                <t t-esc="report_data.get('total_credit',0.0)"/>
+                                <t t-esc="'{:,.2f}'.format(report_data.get('total_credit',0.0))"/>
                             </td>
                             <td>
                                 <strong>الرصيد النهائي:</strong>
-                                <t t-esc="report_data.get('ending_balance',0.0)"/>
+                                <t t-esc="'{:,.2f}'.format(report_data.get('ending_balance',0.0))"/>
                             </td>
                         </tr>
                     </table>
@@ -194,25 +194,25 @@
                         </tr>
                         <tr style="text-align: center;">
                             <td>
-                                <t t-esc="report_data.get('aging',{}).get('0_30',0.0)"/>
+                                <t t-esc="'{:,.2f}'.format(report_data.get('aging',{}).get('0_30',0.0))"/>
                             </td>
                             <td>
-                                <t t-esc="report_data.get('aging',{}).get('31_60',0.0)"/>
+                                <t t-esc="'{:,.2f}'.format(report_data.get('aging',{}).get('31_60',0.0))"/>
                             </td>
                             <td>
-                                <t t-esc="report_data.get('aging',{}).get('61_90',0.0)"/>
+                                <t t-esc="'{:,.2f}'.format(report_data.get('aging',{}).get('61_90',0.0))"/>
                             </td>
                             <td>
-                                <t t-esc="report_data.get('aging',{}).get('91_120',0.0)"/>
+                                <t t-esc="'{:,.2f}'.format(report_data.get('aging',{}).get('91_120',0.0))"/>
                             </td>
                             <td>
-                                <t t-esc="report_data.get('aging',{}).get('121_150',0.0)"/>
+                                <t t-esc="'{:,.2f}'.format(report_data.get('aging',{}).get('121_150',0.0))"/>
                             </td>
                             <td>
-                                <t t-esc="report_data.get('aging',{}).get('150_plus',0.0)"/>
+                                <t t-esc="'{:,.2f}'.format(report_data.get('aging',{}).get('150_plus',0.0))"/>
                             </td>
                             <td>
-                                <t t-esc="sum(report_data.get('aging',{}).values())"/>
+                                <t t-esc="'{:,.2f}'.format(sum(report_data.get('aging',{}).values()))"/>
                             </td>
 
                         </tr>
