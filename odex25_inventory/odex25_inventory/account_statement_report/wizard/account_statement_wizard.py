@@ -24,14 +24,22 @@ class AccountStatementWizard(models.TransientModel):
             '91_120': 0.0, '121_150': 0.0, '150_plus': 0.0,
         }
 
-        domain = [
-            ('partner_id', '=', self.partner_id.id),
-            ('move_id.state', '=', 'posted'),
-            ('account_id.internal_type', '=', 'receivable'),
-            ('reconciled', '=', False),
-        ]
-        if not self.env.user.has_group('account_statement_report.group_account_statement'):
-            domain.append(('move_id.invoice_user_id', '=', self.env.user.id))
+        if self.env.user.has_group('account_statement_report.group_account_statement'):
+            domain = [
+                ('partner_id', '=', self.partner_id.id),
+                ('move_id.state', '=', 'posted'),
+                ('account_id.internal_type', '=', 'receivable'),
+                ('reconciled', '=', False),
+            ]
+        else:
+            domain = [
+                ('partner_id', '=', self.partner_id.id),
+                ('move_id.state', '=', 'posted'),
+                ('account_id.internal_type', '=', 'receivable'),
+                ('reconciled', '=', False),
+                ('move_id.invoice_user_id', '=', self.env.user.id),
+            ]
+
         lines = self.env['account.move.line'].search(domain)
 
         for line in lines:
@@ -59,15 +67,22 @@ class AccountStatementWizard(models.TransientModel):
 
         MoveLine = self.env['account.move.line']
 
-        init_domain = [
-            ('partner_id', '=', self.partner_id.id),
-            ('move_id.state', '=', 'posted'),
-            ('date', '<', self.date_from),
-            ('account_id.internal_type', 'in', ('receivable', 'payable')),
 
-        ]
-        if not self.env.user.has_group('account_statement_report.group_account_statement'):
-            init_domain.append(('move_id.invoice_user_id', '=', self.env.user.id))
+        if self.env.user.has_group('account_statement_report.group_account_statement'):
+            init_domain = [
+                ('partner_id', '=', self.partner_id.id),
+                ('move_id.state', '=', 'posted'),
+                ('date', '<', self.date_from),
+                ('account_id.internal_type', 'in', ('receivable', 'payable')),
+            ]
+        else:
+            init_domain = [
+                ('partner_id', '=', self.partner_id.id),
+                ('move_id.state', '=', 'posted'),
+                ('date', '<', self.date_from),
+                ('account_id.internal_type', 'in', ('receivable', 'payable')),
+                ('move_id.invoice_user_id', '=', self.env.user.id),
+            ]
 
 
         # Initial balance
@@ -85,8 +100,25 @@ class AccountStatementWizard(models.TransientModel):
 
         ]
 
-        if not self.env.user.has_group('account_statement_report.group_account_statement'):
-            domain_lines.append(('move_id.invoice_user_id', '=', self.env.user.id))
+        if self.env.user.has_group('account_statement_report.group_account_statement'):
+            domain_lines = [
+                ('partner_id', '=', self.partner_id.id),
+                ('move_id.state', '=', 'posted'),
+                ('date', '>=', self.date_from),
+                ('date', '<=', self.date_to),
+                ('account_id.internal_type', 'in', ('receivable', 'payable')),
+
+            ]
+        else:
+            domain_lines = [
+                ('partner_id', '=', self.partner_id.id),
+                ('move_id.state', '=', 'posted'),
+                ('date', '>=', self.date_from),
+                ('date', '<=', self.date_to),
+                ('account_id.internal_type', 'in', ('receivable', 'payable')),
+                ('move_id.invoice_user_id', '=', self.env.user.id),
+            ]
+
 
         # Period lines
         lines = MoveLine.search(domain_lines, order='date, move_id, sequence, id')
