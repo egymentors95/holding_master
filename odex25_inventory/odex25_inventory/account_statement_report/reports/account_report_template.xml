@@ -14,11 +14,11 @@
                             <div style="border: 1px solid black; padding: 5px; text-align: center;">
                                 <span style="font-weight: bold; color: blue; font-size: 16px;">كشف حساب عميل</span>
                             </div>
-                            <div class="row">
+                            <div class="row" style="text-align: center;">
+                                <br/>
                                 <div class="col-6">
                                     <strong style="color: blue;">من:</strong>
                                     <t t-esc="report_data.get('date_from','')"/>
-
                                 </div>
                                 <div class="col-6">
                                     <strong style="color: blue;">إلى:</strong>
@@ -61,7 +61,8 @@
                                         <span style="font-weight: bold; color: blue; font-size: 16px;">كشف حساب عميل
                                         </span>
                                     </div>
-                                    <div class="row">
+                                    <div class="row" style="text-align: center;">
+                                        <br/>
                                         <div class="col-6">
                                             <strong style="color: blue;">إلى:</strong>
                                             <t t-esc="report_data.get('date_to','')"/>
@@ -84,9 +85,17 @@
 
 
                 <div class="page" style="direction: rtl; font-size: 14px;" dir="rtl">
-                    <div style="color: black; font-size: 18px;  text-align: right;">
-                        <strong>العميل:</strong>
-                        <t t-esc="report_data.get('partner_name','')"/>
+                    <div class="row">
+                        <div style="color: black; font-size: 18px;  text-align: right;">
+                            <strong>العميل:</strong>
+                            <t t-esc="report_data.get('partner_name','')"/>
+                        </div>
+<!--                        <div style="color: black; font-size: 18px;  text-align: right;">-->
+<!--                            <strong>العميل:</strong>-->
+<!--                            <t t-esc="report_data.get('partner_name','')"/>-->
+<!--                        </div>-->
+
+
                     </div>
 
 

@@ -2,6 +2,7 @@
 from odoo import api, models, fields
 from odoo.exceptions import UserError
 
+
 class AccountStatementWizard(models.TransientModel):
     _name = 'account.statement.wizard'
     _description = 'Customer Account Statement'
@@ -28,8 +29,9 @@ class AccountStatementWizard(models.TransientModel):
             ('move_id.state', '=', 'posted'),
             ('account_id.internal_type', '=', 'receivable'),
             ('reconciled', '=', False),
-            ('move_id.invoice_user_id', '=', self.env.user.id),
         ]
+        if not self.env.user.has_group('account.group_account_statement'):
+            domain.append(('move_id.invoice_user_id', '=', self.env.user.id))
         lines = self.env['account.move.line'].search(domain)
 
         for line in lines:
@@ -63,9 +65,11 @@ class AccountStatementWizard(models.TransientModel):
             ('move_id.state', '=', 'posted'),
             ('date', '<', self.date_from),
             ('account_id.internal_type', 'in', ('receivable', 'payable')),
-        ('move_id.invoice_user_id', '=', self.env.user.id),  # <-- الشرط الجديد
 
         ])
+        if not self.env.user.has_group('account.group_account_statement'):
+            init_lines.append(('move_id.invoice_user_id', '=', self.env.user.id))
+
         initial_balance = sum(init_lines.mapped(lambda l: l.debit - l.credit))
 
         # Period lines
@@ -75,9 +79,11 @@ class AccountStatementWizard(models.TransientModel):
             ('date', '>=', self.date_from),
             ('date', '<=', self.date_to),
             ('account_id.internal_type', 'in', ('receivable', 'payable')),
-        ('move_id.invoice_user_id', '=', self.env.user.id),  # <-- الشرط الجديد
 
         ], order='date, move_id, sequence, id')
+
+        if not self.env.user.has_group('account.group_account_statement'):
+            lines.append(('move_id.invoice_user_id', '=', self.env.user.id))
 
         running_balance = initial_balance
         total_debit = 0.0

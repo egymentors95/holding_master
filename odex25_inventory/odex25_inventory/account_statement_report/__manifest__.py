@@ -8,6 +8,7 @@
     "license": "AGPL-3",
     "depends": ['base','stock', 'report_xlsx','account', 'partner_category', 'allowed_journals', 'access_partner_id', 'sale'],
     "data": [
+        "security/security.xml",
         "security/ir.model.access.csv",
         "wizard/account_statement_wizard_views.xml",
         "wizard/invoice_details_wizard_views.xml",
