@@ -30,7 +30,7 @@ class AccountStatementWizard(models.TransientModel):
             ('account_id.internal_type', '=', 'receivable'),
             ('reconciled', '=', False),
         ]
-        if not self.env.user.has_group('account.group_account_statement'):
+        if not self.env.user.has_group('account_statement_report.group_account_statement'):
             domain.append(('move_id.invoice_user_id', '=', self.env.user.id))
         lines = self.env['account.move.line'].search(domain)
 
@@ -66,7 +66,7 @@ class AccountStatementWizard(models.TransientModel):
             ('account_id.internal_type', 'in', ('receivable', 'payable')),
 
         ]
-        if not self.env.user.has_group('account.group_account_statement'):
+        if not self.env.user.has_group('account_statement_report.group_account_statement'):
             init_domain.append(('move_id.invoice_user_id', '=', self.env.user.id))
 
 
@@ -85,7 +85,7 @@ class AccountStatementWizard(models.TransientModel):
 
         ]
 
-        if not self.env.user.has_group('account.group_account_statement'):
+        if not self.env.user.has_group('account_statement_report.group_account_statement'):
             domain_lines.append(('move_id.invoice_user_id', '=', self.env.user.id))
 
         # Period lines
