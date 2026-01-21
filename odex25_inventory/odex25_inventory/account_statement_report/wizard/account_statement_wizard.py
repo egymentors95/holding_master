@@ -59,31 +59,38 @@ class AccountStatementWizard(models.TransientModel):
 
         MoveLine = self.env['account.move.line']
 
-        # Initial balance
-        init_lines = MoveLine.search([
+        init_domain = [
             ('partner_id', '=', self.partner_id.id),
             ('move_id.state', '=', 'posted'),
             ('date', '<', self.date_from),
             ('account_id.internal_type', 'in', ('receivable', 'payable')),
 
-        ])
+        ]
         if not self.env.user.has_group('account.group_account_statement'):
-            init_lines.append(('move_id.invoice_user_id', '=', self.env.user.id))
+            init_domain.append(('move_id.invoice_user_id', '=', self.env.user.id))
+
+
+        # Initial balance
+        init_lines = MoveLine.search(init_domain)
 
         initial_balance = sum(init_lines.mapped(lambda l: l.debit - l.credit))
 
-        # Period lines
-        lines = MoveLine.search([
+
+        domain_lines = [
             ('partner_id', '=', self.partner_id.id),
             ('move_id.state', '=', 'posted'),
             ('date', '>=', self.date_from),
             ('date', '<=', self.date_to),
             ('account_id.internal_type', 'in', ('receivable', 'payable')),
 
-        ], order='date, move_id, sequence, id')
+        ]
 
         if not self.env.user.has_group('account.group_account_statement'):
-            lines.append(('move_id.invoice_user_id', '=', self.env.user.id))
+            domain_lines.append(('move_id.invoice_user_id', '=', self.env.user.id))
+
+        # Period lines
+        lines = MoveLine.search(domain_lines, order='date, move_id, sequence, id')
+
 
         running_balance = initial_balance
         total_debit = 0.0
