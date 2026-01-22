@@ -43,7 +43,8 @@
             <!--                <attribute name="groups">editable_sale.group_editable_account_move_manager</attribute>-->
             <!--            </xpath>-->
             <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='tax_ids']" position="before">
-                <field name="lot_id"/>
+                <field name="lot_id" groups="editable_sale.group_editable_sale_order_user" readonly="1"/>
+                <field name="lot_id" groups="editable_sale.group_editable_sale_order" />
             </xpath>
             <xpath expr="//field[@name='line_ids']/tree" position="inside">
                 <field name="lot_id"/>

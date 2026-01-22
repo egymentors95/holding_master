@@ -30,7 +30,7 @@ class InventoryCard(models.TransientModel):
             ('company_id', 'in', self.env.companies.ids),
         ]
         if self.location:
-            domain.append(('location_id', 'in', self.location.id))
+            domain.append(('location_id', '=', self.location.id))
 
         lines = self.env['stock.move.line'].search(domain)
 

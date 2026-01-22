@@ -12,6 +12,8 @@
     "category": "Inventory",
     "depends": [
         "sale",
+        "stock",
+        "account",
         "sale_management",
         "sale_margin",
         "account",
@@ -27,6 +29,7 @@
         "views/account_move_views.xml",
         "views/mrp_production_views.xml",
         "views/sale_margin_views.xml",
+        "views/stock_move_line_views.xml",
     ],
     "installable": True,
     "application": False,
