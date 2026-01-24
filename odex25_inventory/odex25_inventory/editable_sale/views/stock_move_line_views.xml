@@ -12,15 +12,33 @@
                 <attribute name="attrs">{'column_invisible': [('parent.show_lots_text', '=', True)], 'invisible':
                     [('lots_visible', '=', False)], 'readonly': 1}
                 </attribute>
-                <attribute name="groups">editable_sale.group_editable_sale_order_user</attribute>
+                <attribute name="groups">stock.group_stock_user</attribute>
             </xpath>
             <xpath expr="//field[@name='lot_id']" position="after">
                 <field name="lot_id"
-                       groups="editable_sale.group_editable_sale_order"
-                       context="{'default_product_id': product_id, 'default_company_id': company_id, 'active_picking_id': picking_id}" optional="show"
+                       groups="stock.group_stock_manager"
+                       context="{'default_product_id': product_id, 'default_company_id': company_id, 'active_picking_id': picking_id}"
+                       optional="show"
                        attrs="{'column_invisible': [('parent.show_lots_text', '=', True)], 'invisible': [('lots_visible', '=', False)]}"/>
 
             </xpath>
+
+        </field>
+    </record>
+
+    <record id="edit_lot_view_stock_move_line_operation_tree" model="ir.ui.view">
+        <field name="name">edit.lot.view.stock.move.line.operation.tree</field>
+        <field name="model">stock.move.line</field>
+        <field name="inherit_id" ref="stock.view_stock_move_line_operation_tree"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='lot_id']" position="attributes">
+                <attribute name="groups">stock.group_stock_manager</attribute>
+            </xpath>
+            <xpath expr="//field[@name='lot_id']" position="after">
+               <field name="lot_id" readonly="1" groups="stock.group_stock_user"/>
+            </xpath>
+
 
         </field>
     </record>
