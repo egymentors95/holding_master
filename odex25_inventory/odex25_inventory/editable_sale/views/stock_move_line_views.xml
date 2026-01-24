@@ -9,17 +9,14 @@
         <field name="arch" type="xml">
 
             <xpath expr="//field[@name='lot_id']" position="attributes">
-                <attribute name="attrs">{'column_invisible': [('parent.show_lots_text', '=', True)], 'invisible':
-                    [('lots_visible', '=', False)], 'readonly': 1}
-                </attribute>
-                <attribute name="groups">stock.group_stock_user</attribute>
+                <attribute name="groups">stock.group_stock_manager</attribute>
             </xpath>
             <xpath expr="//field[@name='lot_id']" position="after">
                 <field name="lot_id"
-                       groups="stock.group_stock_manager"
-                       context="{'default_product_id': product_id, 'default_company_id': company_id, 'active_picking_id': picking_id}"
+                       groups="stock.group_stock_user"
                        optional="show"
-                       attrs="{'column_invisible': [('parent.show_lots_text', '=', True)], 'invisible': [('lots_visible', '=', False)]}"/>
+                       readonly="1"
+                     />
 
             </xpath>
 
