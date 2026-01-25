@@ -20,9 +20,11 @@
         "odex25_account_asset",
         "mrp",
         "access_partner_id",
+        "expense_product_report",
         "ksa_zatca_integration",
     ],
     "data": [
+        "security/ir.model.access.csv",
         "security/groups_views.xml",
         "views/sale_order_views.xml",
         "views/stock_picking_views.xml",

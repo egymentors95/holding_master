@@ -70,10 +70,10 @@ class SaleOrderLine(models.Model):
                         "The unit price cannot be lower than the product's list price."
                     )
 
-    def _prepare_invoice_line(self, **optional_values):
-        res = super()._prepare_invoice_line(**optional_values)
-
-        if self.lot_id:
-            res['lot_id'] = self.lot_id.id
-
-        return res
+    # def _prepare_invoice_line(self, **optional_values):
+    #     res = super()._prepare_invoice_line(**optional_values)
+    #
+    #     if self.lot_id:
+    #         res['lot_id'] = self.lot_id.id
+    #
+    #     return res

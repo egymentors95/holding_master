@@ -15,6 +15,7 @@ class AccountMove(models.Model):
         states={'draft': [('readonly', False)]},
         default=lambda self: date.today(),
     )
+    sale_id = fields.Many2one(comodel_name='sale.order', string='Sale Order')
 
     # def action_post(self):
     #     for move in self:
