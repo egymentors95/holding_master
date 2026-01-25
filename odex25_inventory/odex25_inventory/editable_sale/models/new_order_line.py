@@ -26,7 +26,7 @@ class NewOrderLine(models.Model):
 
 
 
-    @api.depends('product_id', 'account_id', 'user_id')
+    @api.depends('product_id', 'user_id')
     def _compute_analytic_account_id(self):
         for record in self:
             if record.user_id and record.user_id.analytic_account_id:
