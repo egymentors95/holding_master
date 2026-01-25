@@ -86,7 +86,11 @@
                         string="Create Invoice (Direct)"
                         type="object"
                         class="btn-primary"
-                        attrs="{'invisible': [('invoice_status', '!=', 'to invoice')]}"/>
+                        attrs="{'invisible': ['|',
+                ('invoice_status', '!=', 'no'),
+                ('state', 'not in', ('sale', 'done'))]}"/>
+
+
                 <!--                        groups="editable_sale.group_editable_sale_order_user"-->
 
                 <!--                <button name="action_create_invoice_direct"-->
@@ -138,7 +142,7 @@
             <!--                            USER                       -->
             <xpath expr="//field[@name='order_line']/tree/field[@name='product_uom_qty']" position="after">
                 <field name="product_uom" readonly="1" groups="editable_sale.group_editable_sale_order_user"/>
-<!--                <field name="lot_id" attrs="{'column_invisible': 1}"/>-->
+                <!--                <field name="lot_id" attrs="{'column_invisible': 1}"/>-->
                 <field name="tax_id" widget="many2many_tags" readonly="1"
                        groups="editable_sale.group_editable_sale_order_user"/>
             </xpath>

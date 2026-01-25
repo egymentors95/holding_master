@@ -35,9 +35,56 @@ class SaleOrder(models.Model):
     #         invoices.write({'sale_id': order.id})
 
             # 🔹 مزامنة new_order_lines
+            order.sudo().check_prices_taxes()
             order.sudo().sync_new_order_lines_to_invoice()
 
         return True
+
+    def check_prices_taxes(self):
+        for rec in self:
+            # نجمع lines حسب المنتج
+            product_map = {}
+
+            for line in rec.new_order_line_ids:
+                if not line.product_id:
+                    continue
+
+                product_id = line.product_id.id
+                if product_id not in product_map:
+                    product_map[product_id] = []
+
+                product_map[product_id].append(line)
+
+            # نلف على كل منتج
+            for product_id, lines in product_map.items():
+                price = False
+                taxes = False
+                discount = False
+
+                # نحدد reference line (اللي عنده بيانات)
+                for l in lines:
+                    if l.unit_price and not price:
+                        price = l.unit_price
+                    if l.tax_id and not taxes:
+                        taxes = l.tax_id
+                    if l.discount and not discount:
+                        discount = l.discount
+
+                # نحدث السطور اللي ناقصها بيانات
+                for l in lines:
+                    vals = {}
+
+                    if not l.unit_price and price:
+                        vals['unit_price'] = price
+
+                    if not l.tax_id and taxes:
+                        vals['tax_id'] = [(6, 0, taxes.ids)]
+
+                    if not l.discount and discount:
+                        vals['discount'] = discount
+
+                    if vals:
+                        l.write(vals)
 
     def action_confirm(self):
         res = super(SaleOrder, self).action_confirm()
