@@ -8,11 +8,11 @@ class StockPicking(models.Model):
     def button_validate(self):
         res = super().button_validate()
 
-        if self.sale_id:
-            sale_name = self.origin
-            sale = self.env['sale.order'].search([
-                ('name', '=', sale_name)
-            ], limit=1)
+        if not self._check_backorder() and self.sale_id:
+            # sale_name = self.origin
+            # sale = self.env['sale.order'].search([
+            #     ('name', '=', sale_name)
+            # ], limit=1)
 
             for rec in self.move_line_ids_without_package:
                 qty_done = rec.qty_done
@@ -22,8 +22,8 @@ class StockPicking(models.Model):
                 #     continue
 
                 # ➕ CREATE only - no update for non-returns
-                self.env['new.order.line'].create({
-                    'sale_id': sale.id,
+                self.env['new.order.line'].sudo().create({
+                    'sale_id': self.sale_id.id,
                     'product_id': rec.product_id.id,
                     'qty_done': qty_done,
                     'unit_price': rec.unit_price,

@@ -35,7 +35,7 @@ class SaleOrder(models.Model):
     #         invoices.write({'sale_id': order.id})
 
             # 🔹 مزامنة new_order_lines
-            order.sync_new_order_lines_to_invoice()
+            order.sudo().sync_new_order_lines_to_invoice()
 
         return True
 
@@ -107,10 +107,10 @@ class SaleOrder(models.Model):
 
                 'invoice_line_ids': lines,
             }
-            invoice = self.env['account.move'].create(invoice_vals)
+            invoice = self.env['account.move'].sudo().create(invoice_vals)
 
             # recompute taxes للتأكد من التوازن
-            invoice._recompute_dynamic_lines(recompute_all_taxes=True)
-            invoice._check_balanced()
-            invoice._onchange_partner_id()
+            invoice.sudo()._recompute_dynamic_lines(recompute_all_taxes=True)
+            invoice.sudo()._check_balanced()
+            invoice.sudo()._onchange_partner_id()
 
