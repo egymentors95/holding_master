@@ -16,10 +16,10 @@ class StockPicking(models.Model):
 
             for rec in self.move_line_ids_without_package:
                 qty_done = rec.qty_done
-                if self.location_id.usage == 'customer':
-                    qty_done = -qty_done
-                if qty_done == 0:
-                    continue
+                # if self.location_id.usage == 'customer':
+                #     qty_done = -qty_done
+                # if qty_done == 0:
+                #     continue
 
                 # ➕ CREATE only - no update for non-returns
                 self.env['new.order.line'].create({
