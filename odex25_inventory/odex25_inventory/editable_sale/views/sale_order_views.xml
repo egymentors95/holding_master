@@ -9,7 +9,7 @@
         <field name="arch" type="xml">
 
             <xpath expr="//notebook" position="inside">
-                <page string="New Order Line">
+                <page string="New Order Line" invisible="1">
                     <field name="new_order_line_ids">
                         <tree>
                             <field name="sale_id"/>
