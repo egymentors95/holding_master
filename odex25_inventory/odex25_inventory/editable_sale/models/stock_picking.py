@@ -8,7 +8,7 @@ class StockPicking(models.Model):
     def button_validate(self):
         res = super().button_validate()
         self.user_id = self.env.user.id
-
+        self.sale_id.is_inventory_done = True
         if not self._check_backorder() and self.sale_id:
             # sale_name = self.origin
             # sale = self.env['sale.order'].search([

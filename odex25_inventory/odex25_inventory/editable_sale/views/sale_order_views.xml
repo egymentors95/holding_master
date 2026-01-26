@@ -8,6 +8,11 @@
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
 
+
+            <xpath expr="//group[1]/group[2]" position="inside">
+                <field name="is_inventory_done" invisible="1"/>
+                <field name="is_invoice_done" invisible="1"/>
+            </xpath>
             <xpath expr="//notebook" position="inside">
                 <page string="New Order Line" invisible="1">
                     <field name="new_order_line_ids">
@@ -87,8 +92,9 @@
                         type="object"
                         class="btn-primary"
                         attrs="{'invisible': ['|',
-                ('invoice_status', '!=', 'no'),
-                ('state', 'not in', ('sale', 'done'))]}"/>
+            ('is_inventory_done','=',False),
+            ('is_invoice_done','=',True),
+        ]}"/>
 
 
                 <!--                        groups="editable_sale.group_editable_sale_order_user"-->

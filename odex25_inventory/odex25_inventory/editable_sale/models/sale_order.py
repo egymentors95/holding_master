@@ -6,6 +6,20 @@ class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
     new_order_line_ids = fields.One2many(comodel_name='new.order.line', inverse_name='sale_id', copy=False)
+    is_inventory_done = fields.Boolean(default=False, copy=False)
+    is_invoice_done = fields.Boolean(
+        string="Is Invoice Done",
+        compute='_compute_is_invoice_done',
+        store=True,
+        copy=False,
+        default=False
+    )
+
+    @api.depends('invoice_ids', 'invoice_ids.state')
+    def _compute_is_invoice_done(self):
+        for order in self:
+            # يتحقق إذا هناك فاتورة ليست ملغاة
+            order.is_invoice_done = any(order.invoice_ids.filtered(lambda inv: inv.state != 'cancel'))
 
     def action_create_invoice_direct(self):
         """يستدعي الـ wizard sale.advance.payment.inv وينفذ إنشاء الفاتورة"""
